@@ -1,0 +1,6 @@
+- insert:
+    - id: godot-docs-rag
+      name: '@local/godot-docs-rag'
+    - id: godot-docs-rag-usage-log
+      name: '@local/godot-docs-rag/usage-log'
+      disabled: true

@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Godot docs RAG usage log">
+  <rect x="8" y="8" width="48" height="48" rx="6" fill="#2f9e44"/>
+  <rect x="16" y="18" width="32" height="4" rx="2" fill="#ffffff"/>
+  <rect x="16" y="28" width="24" height="4" rx="2" fill="#ffffff" opacity=".85"/>
+  <rect x="16" y="38" width="28" height="4" rx="2" fill="#ffffff" opacity=".7"/>
+  <circle cx="48" cy="48" r="4" fill="#ffffff"/>
+</svg>

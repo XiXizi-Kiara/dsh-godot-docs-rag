@@ -2,5 +2,19 @@
   "name": "@local/godot-docs-rag",
   "version": "0.1.0",
   "private": true,
-  "type": "module"
+  "type": "module",
+  "description": "把 Godot 官方文档 RAG 暴露为 DSH 原生工具",
+  "exports": {
+    ".": "./index.js",
+    "./usage-log": "./usage-log/index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./usage-log/locale/*.json": "./usage-log/locale/*.json",
+    "./usage-log/icon": "./usage-log/icon.svg"
+  },
+  "files": [
+    "index.js", "lib/*.js", "usage-log/index.js", "usage-log/locale/*.json",
+    "usage-log/icon.svg", "cordis.patch.yml", "locale/*.json", "icon.svg", "README.md"
+  ],
+  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
 }
