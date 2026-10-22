@@ -3,6 +3,8 @@ import { diagnosticMessage, resolveConfig } from './lib/config.js';
 import { RagBackend } from './lib/backend.js';
 import { makeTool, TOOL_DEFS } from './lib/tools.js';
 
+export const inject = ['tools'];
+
 export function apply(ctx, config = {}, options = {}) {
   const resolved = options.resolved || resolveConfig(config || {}, options.env || process.env);
   if (!resolved.ok) {
