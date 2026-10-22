@@ -247,3 +247,12 @@ for file in dsh-plugin/test/*.test.js; do node "$file"; done   # 插件 25 个�
 
 - 仓库内禁止出现机器相关绝对路径（`tests/test_portability.py` 会拦截）；
 - 接口与数据结构以 [docs/INTERFACES.md](docs/INTERFACES.md) 为准。
+
+---
+
+## 许可证
+
+本项目代码采用 **MIT License**，见 [LICENSE](LICENSE)。
+DSH 插件 `dsh-plugin/` 同样为 MIT（与 npm 已发布版本一致），见 [dsh-plugin/LICENSE](dsh-plugin/LICENSE)。
+
+> 仓库不包含 Godot 官方文档内容本身（`godot-docs-html-stable/` 已在 `.gitignore` 中）；如需再分发官方文档，请遵守 Godot 文档自身的许可与署名要求。
