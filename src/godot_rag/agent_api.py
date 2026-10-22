@@ -51,6 +51,29 @@ def strip_html(text: str) -> str:
     return re.sub(r"\n{3,}", "\n\n", text).strip()
 
 
+def document_text(doc: dict) -> str:
+    """从 Document.to_dict() 的 sections 提取纯文本。
+
+    真实索引里的文档没有 html_text（那是 service 层临时拼的）；
+    这里直接消费 sections，保证 MCP 与 DSH 两端 get_doc 都有正文。
+    """
+    parts: list[str] = []
+    for section in doc.get("sections") or []:
+        title = (section.get("title") or "").strip()
+        if title:
+            parts.append(title)
+        for block in section.get("blocks") or []:
+            text = (block.get("text") or "").strip()
+            if not text:
+                continue
+            if block.get("kind") == "code":
+                lang = block.get("lang") or ""
+                parts.append(f"```{lang}\n{text}\n```")
+            else:
+                parts.append(text)
+    return "\n\n".join(parts)
+
+
 def search_payload(rag, query: str, k: int = 5, mode: str = "hybrid", base: str | None = None) -> dict:
     results = rag.search(query, k=k, mode=mode)
     return {
@@ -87,7 +110,8 @@ def get_doc_payload(
             f"未找到文档：{doc_id}",
             "可先用 godot_search_docs 找到正确的 doc_id",
         )
-    body = strip_html(doc.get("html_text", ""))
+    raw_html = doc.get("html_text")
+    body = strip_html(raw_html) if raw_html else document_text(doc)
     return {
         "doc_id": doc.get("doc_id", doc_id),
         "title": doc.get("title", doc_id),

@@ -97,6 +97,26 @@ class TestAgentApi(unittest.TestCase):
         self.assertIn("索引尚未构建", err["message"])
         self.assertIn("scripts\\run.py build", err["hint"])
 
+    def test_get_doc_from_sections(self):
+        class SectionRAG:
+            def get_doc(self, doc_id):
+                return {
+                    "doc_id": doc_id, "title": "Node",
+                    "url": "classes/class_node.html", "breadcrumbs": [],
+                    "sections": [{
+                        "title": "Node", "level": 1,
+                        "blocks": [
+                            {"kind": "para", "text": "Base class for all scene objects."},
+                            {"kind": "code", "text": "var n = Node.new()", "lang": "gdscript"},
+                        ],
+                    }],
+                }
+
+        payload = agent_api.get_doc_payload(SectionRAG(), "classes/class_node", limit=400)
+        self.assertIn("Base class", payload["text"])
+        self.assertIn("Node.new()", payload["text"])
+        self.assertGreater(payload["total_chars"], 10)
+
     def test_error_payload_value_error_and_unknown(self):
         self.assertEqual(agent_api.error_payload(ValueError("bad")).get("code"), "BAD_PARAMS")
         self.assertEqual(agent_api.error_payload(RuntimeError("boom")).get("code"), "INTERNAL")
