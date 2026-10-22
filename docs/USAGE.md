@@ -122,7 +122,19 @@ python -m godot_rag eval   [--configs hybrid,hybrid+rerank] [--json]
 
 Ctrl+C 优雅退出。索引尚未构建时服务仍可启动，UI 会提示先运行 `build`。
 
-### 2.4 stats / eval
+### 2.4 MCP 服务
+
+```powershell
+... scripts\run.py mcp                                   # stdio（默认，推荐给本地 agent）
+... scripts\run.py mcp --transport streamable-http --port 8766  # 常驻 HTTP
+# 等价：python -m godot_rag.mcp_server ...
+```
+
+暴露 4 个工具：`search_docs`、`ask_docs`、`get_doc`、`rag_stats`（工具名在 agent 侧为
+`mcp__godot__*`）。索引在首次工具调用时懒加载。DSH 侧接入步骤见
+[DSH_MCP_SETUP.md](DSH_MCP_SETUP.md)。
+
+### 2.5 stats / eval
 
 - `stats`：打印 `rag.stats()`（片段数、文档数、维度、模型、构建耗时等）；
 - `eval`：转调 `godot_rag.eval.main`，参数原样传递（`--configs`、`--json`），

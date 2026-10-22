@@ -22,6 +22,7 @@ C:\Users\Kiara\.conda\envs\godotrag\python.exe
 | fastapi | 0.159.1 | HTTP 服务（默认后端） |
 | uvicorn[standard] | 0.47.0 | ASGI 服务器 |
 | openai | 3.36.1 | LLM 生成（OpenAI 兼容接口） |
+| mcp | 1.30.0 | MCP 服务（stdio / streamable-http），供 agent 集成 |
 | tiktoken | 0.14.0 | prompt token 精确计数（数据文件见下） |
 | lxml / beautifulsoup4 | 6.1.3 / 4.15.0 | 备用 HTML 解析能力 |
 | httpx | 0.28.1 | FastAPI TestClient（仅测试） |
@@ -87,7 +88,9 @@ cd C:\Users\Kiara\Desktop\GodotRag
 & $PY scripts\run.py ask "queue_free 和 free 区别" --json
 & $PY scripts\run.py serve --port 8765        # FastAPI（默认）
 & $PY scripts\run.py serve --port 8765 --backend stdlib
-& $PY scripts\run_tests.py -v                 # 116 tests
+& $PY scripts\run.py mcp                      # MCP 服务（stdio，agent 集成）
+& $PY scripts\run.py mcp --transport streamable-http --port 8766
+& $PY scripts\run_tests.py -v                 # 122 tests
 & $PY scripts\fetch_models.py --rerank        # 下载精排模型（ModelScope 优先）
 ```
 

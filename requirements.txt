@@ -22,6 +22,7 @@ fastapi==0.159.1
 uvicorn[standard]==0.47.0
 openai==3.36.1
 tiktoken==0.14.0           # 注意：BPE 数据文件需联网下载一次（见 docs/ENV.md）
+mcp==1.30.0                # MCP 服务（stdio / streamable-http），供 agent 原生集成
 
 # ---- 文档解析辅助（当前按 RST 解析，此两项为备用能力）----
 lxml==6.1.3

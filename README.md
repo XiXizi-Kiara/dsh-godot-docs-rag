@@ -11,8 +11,9 @@
 - **中文可用**：268 条 Godot 领域术语映射 + jieba 分词补充，中文提问也能命中英文文档
 - **GPU 加速**：godotrag 环境已装 CUDA 版 torch（RTX 4060），全量嵌入约 100 秒、单次精排约 0.3 秒；
   无 GPU 时自动回退 CPU
-- **三种形态**：Python 库、CLI（`--json` 供 agent 解析）、FastAPI 服务 + 中文单页 UI
-  （保留零依赖标准库服务作为 `--backend stdlib`）
+- **四种形态**：Python 库、CLI（`--json` 供 agent 解析）、FastAPI 服务 + 中文单页 UI
+  （保留零依赖标准库服务作为 `--backend stdlib`）、**MCP 服务**（stdio / streamable-http，
+  agent 可直接把 Godot 文档检索当原生工具调用）
 - **可选 LLM 生成**：openai SDK 调 DeepSeek/OpenAI 兼容接口；无 key 时返回检索式回答 + 引用
 
 ## 环境与依赖
@@ -69,6 +70,17 @@ $env:GODOT_RAG_LLM_API_KEY = "sk-..."
 
 搜索框、模式切换（hybrid/dense/bm25/hybrid+rerank）、结果卡片、来源链接、展开整页原文。
 
+### 5. MCP 服务（给 agent 用）
+
+```powershell
+& $PY scripts\run.py mcp                                        # stdio（DSH/Claude Desktop 等本地集成）
+& $PY scripts\run.py mcp --transport streamable-http --port 8766 # 常驻 HTTP
+```
+
+暴露 4 个工具：`search_docs`、`ask_docs`、`get_doc`、`rag_stats`。DSH 侧只需在
+`~/.dsh/profiles/<profile>/cordis.patch.yml` 追加一条 `@deepseek-ai/dsh-mcp-client`
+配置，详细步骤见 [docs/DSH_MCP_SETUP.md](docs/DSH_MCP_SETUP.md)。
+
 ## 评测结果（40 条人工 QA，`data/reports/eval.md`）
 
 | 配置 | Recall@1 | Recall@5 | Recall@10 | MRR@10 | PageHit@5 | 平均延迟 |
@@ -124,6 +136,21 @@ answer = rag.ask("queue_free 和 free 的区别", k=6)
 print(answer["answer"], answer["citations"])
 ```
 
+## MCP 集成
+
+MCP 服务把文档检索包装成 agent 可直接调用的工具（协议层由官方 `mcp` Python SDK 提供）：
+
+| 工具（agent 侧名称） | 作用 |
+|---|---|
+| `mcp__godot__search_docs` | 检索文档，返回结构化 JSON（标题/面包屑/API 符号/URL/片段） |
+| `mcp__godot__ask_docs` | 回答 + `[n]` 引用（无 LLM key 时为检索式回答） |
+| `mcp__godot__get_doc` | 按 `doc_id` 读取整页原文（去 HTML、截断） |
+| `mcp__godot__rag_stats` | 索引规模、模型与设备信息 |
+
+- 索引与模型在首次工具调用时懒加载，进程内复用；
+- 默认 `stdio` 传输（agent 本地集成最简单），也支持 `streamable-http`（常驻/远程）；
+- DSH 的配置方式见 [docs/DSH_MCP_SETUP.md](docs/DSH_MCP_SETUP.md)。
+
 ## HTTP API（FastAPI）
 
 ```
@@ -139,13 +166,14 @@ GET  /api/doc?doc_id=classes/class_node
 
 ```
 src/godot_rag/     parse_rst / chunk / embed / bm25 / index / retrieve / generate /
-                   service（标准库）/ service_fastapi（FastAPI）/ cli / eval
+                   service（标准库）/ service_fastapi（FastAPI）/ mcp_server（MCP）/ cli / eval
 scripts/           run.py（统一入口）、run_tests.py、fetch_models.py、validate_qa.py
 data/processed/    documents.jsonl、chunks.jsonl、qa.jsonl
 data/index/        meta.json、chunks.pkl、faiss.index、bm25.pkl、docs.pkl
 data/reports/      eval.md / eval.json
-docs/              ENV.md（环境与依赖）、INTERFACES.md（模块接口）、USAGE.md（使用手册）、设计稿
-tests/             116 个 unittest（解析/分块/BM25/检索/CLI/服务/生成/评测/FastAPI）
+docs/              ENV.md（环境与依赖）、INTERFACES.md（模块接口）、USAGE.md（使用手册）、
+                   DSH_MCP_SETUP.md（DSH 的 MCP 接入步骤）、设计稿
+tests/             122 个 unittest（解析/分块/BM25/检索/CLI/服务/生成/评测/FastAPI/MCP）
 ```
 
 ## 测试

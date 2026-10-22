@@ -161,5 +161,28 @@ translate_query(query: str) -> tuple[str, list[tuple[str, str]]]
 - 必须全绿（不依赖 GPU / 不依赖全量索引）——当前 **116 个 unittest**。
 - Lead 验收：全量 build 成功、`search`/`ask`/`serve` 冒烟、eval 达到 Recall@5 ≥ 0.85、PageHit@5 ≥ 0.95（当前 hybrid 0.875 / 0.975）。
 - 运行依赖见 [docs/ENV.md](ENV.md) 与 [requirements.txt](../requirements.txt)：torch(cu128)、
-  sentence-transformers、faiss-cpu、rank_bm25、jieba、fastapi、uvicorn、openai、tiktoken 等。
+  sentence-transformers、faiss-cpu、rank_bm25、jieba、fastapi、uvicorn、openai、tiktoken、mcp 等。
   新增依赖必须同步写入 requirements.txt 并保证测试可离线运行。
+
+## 11. MCP 服务（`mcp_server.py`）
+
+```python
+python -m godot_rag.mcp_server [--transport stdio|streamable-http|sse]
+                               [--host 127.0.0.1] [--port 8766] [--index-dir DIR]
+# CLI 等价入口：python -m godot_rag mcp ...
+```
+
+工具（agent 侧名称 `mcp__<serverName>__<tool>`）：
+
+| 工具 | 输入 | 输出 |
+|---|---|---|
+| `search_docs` | `query`, `k=5`, `mode="hybrid"` | JSON：rank/score/title/symbol/breadcrumbs/url/text |
+| `ask_docs` | `query`, `k=6`, `mode="hybrid"` | Markdown：回答 + `[n]` 引用 + 完整 URL |
+| `get_doc` | `doc_id`, `max_chars=6000` | Markdown：标题/doc_id/URL/正文（去 HTML、可截断） |
+| `rag_stats` | — | JSON：索引规模、模型、设备 |
+
+- 索引与模型在**首次工具调用时懒加载**，通过模块级 `_RAG` 在进程内复用；
+- 索引缺失等错误以可读文本返回（不抛裸异常），并提示先运行 `scripts/run.py build`；
+- 结果 URL 由相对路径补全为 `https://docs.godotengine.org/en/stable/...`；
+- DSH 侧配置见 [docs/DSH_MCP_SETUP.md](DSH_MCP_SETUP.md)（`@deepseek-ai/dsh-mcp-client`，
+  stdio 或 streamable-http）。

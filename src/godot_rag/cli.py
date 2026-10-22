@@ -321,6 +321,27 @@ def _cmd_serve(args) -> int:
     return 0
 
 
+def _cmd_mcp(args) -> int:
+    try:
+        from godot_rag.mcp_server import main as mcp_main
+    except ImportError as exc:
+        return _fail(
+            f"MCP 依赖未安装（pip install mcp）：{exc}", 2, False
+        )
+    argv: list[str] = [
+        "--transport", args.transport,
+        "--host", args.host,
+        "--port", str(args.port),
+    ]
+    if args.index_dir:
+        argv += ["--index-dir", args.index_dir]
+    try:
+        mcp_main(argv)
+    except OSError as exc:
+        return _fail(f"MCP 服务启动失败（端口 {args.port} 可能被占用）：{exc}", 1, False)
+    return 0
+
+
 def _cmd_eval(args) -> int:
     try:
         eval_main = _load_eval_main()
@@ -387,6 +408,18 @@ def build_parser() -> argparse.ArgumentParser:
         help="HTTP 后端：fastapi（默认）或 stdlib（零依赖标准库实现）",
     )
     serve.set_defaults(handler=_cmd_serve)
+
+    mcp = subparsers.add_parser("mcp", help="启动 MCP 服务（stdio / streamable-http）")
+    mcp.add_argument(
+        "--transport",
+        choices=("stdio", "streamable-http", "sse"),
+        default="stdio",
+        help="MCP 传输方式（默认 stdio）",
+    )
+    mcp.add_argument("--host", default="127.0.0.1", help="HTTP 传输监听地址（默认 127.0.0.1）")
+    mcp.add_argument("--port", type=int, default=8766, help="HTTP 传输端口（默认 8766）")
+    mcp.add_argument("--index-dir", default=None, help="索引目录（默认 data/index）")
+    mcp.set_defaults(handler=_cmd_mcp)
 
     stats = subparsers.add_parser("stats", help="查看索引统计")
     stats.add_argument("--index-dir", default=DEFAULT_INDEX_DIR, help="索引目录（默认 data/index）")
