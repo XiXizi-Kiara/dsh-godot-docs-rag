@@ -382,6 +382,19 @@ def write_reports(report: dict, out_dir: str | Path, stem: str = "eval") -> tupl
 # ---------------------------------------------------------------------------
 
 
+def _portable_path(value: str | Path) -> str:
+    """报告里的路径写成相对仓库根的 POSIX 形式，避免把本机绝对路径写进仓库。
+
+    不 import config：本模块可能被测试以独立文件方式加载（无父包）。
+    """
+    path = Path(value)
+    root = Path(__file__).resolve().parents[2]
+    try:
+        return path.resolve().relative_to(root).as_posix()
+    except (ValueError, OSError):
+        return path.name
+
+
 def _make_rag(index_dir: str | Path):
     """惰性构造 GodotRAG；缺索引或包不可用时抛 EvalError。"""
     idx = Path(index_dir)
@@ -442,8 +455,8 @@ def main(argv: list[str] | None = None) -> int:
         started = time.perf_counter()
         report = evaluate(rag, qa, configs)
         elapsed = time.perf_counter() - started
-        report["qa_path"] = str(Path(args.qa))
-        report["index_dir"] = str(Path(args.index))
+        report["qa_path"] = _portable_path(args.qa)
+        report["index_dir"] = _portable_path(args.index)
         report["elapsed_seconds"] = round(elapsed, 2)
         json_path, md_path = write_reports(report, args.out_dir)
         log(f"报告已写入：{json_path} 与 {md_path}（耗时 {elapsed:.1f}s）")

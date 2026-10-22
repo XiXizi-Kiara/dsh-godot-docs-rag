@@ -17,6 +17,7 @@ from __future__ import annotations
 import json
 import os
 import re
+import sys
 from typing import Literal
 
 from . import __version__
@@ -54,9 +55,12 @@ def _error_text(exc: Exception) -> str:
     from .retrieve import IndexNotReady
 
     if isinstance(exc, IndexNotReady):
+        # 用当前解释器拼命令，避免把某台机器的 conda 路径写进仓库
+        py = sys.executable or "python"
         return (
             "索引尚未构建。请先在项目根目录运行：\n"
-            r"C:\Users\Kiara\.conda\envs\godotrag\python.exe scripts\run.py build"
+            f"{py} scripts\\run.py build\n"
+            "（若当前解释器不是 godotrag 环境，请改用该环境的 python 执行同一命令）"
         )
     return f"Godot RAG 执行失败：{type(exc).__name__}: {exc}"
 

@@ -5,9 +5,11 @@
 - ModelScope API 稳定可用，本脚本优先用 ModelScope 直连下载，失败再回退 hf-mirror。
 
 用法（项目根目录）：
-    C:\\Users\\Kiara\\.conda\\envs\\godotrag\\python.exe scripts\\fetch_models.py
+    python scripts/fetch_models.py
     ... --rerank        # 额外下载 bge-reranker-base
     ... --check         # 只检查本地是否齐全
+
+`python` 指 conda 环境 godotrag 的解释器（可先 activate，或用其绝对路径）。
 """
 from __future__ import annotations
 

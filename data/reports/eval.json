@@ -5915,7 +5915,7 @@
       ]
     }
   },
-  "qa_path": "C:\\Users\\Kiara\\Desktop\\GodotRag\\data\\processed\\qa.jsonl",
-  "index_dir": "C:\\Users\\Kiara\\Desktop\\GodotRag\\data\\index",
+  "qa_path": "data/processed/qa.jsonl",
+  "index_dir": "data/index",
   "elapsed_seconds": 81.5
 }

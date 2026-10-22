@@ -1,7 +1,8 @@
 """用 conda godotrag 环境运行全部单元测试。
 
-    C:\\Users\\Kiara\\.conda\\envs\\godotrag\\python.exe scripts\\run_tests.py [-v]
+    python scripts/run_tests.py [-v]
 
+`python` 指 conda 环境 godotrag 的解释器（可先 activate，或用其绝对路径）。
 不依赖 GPU、不依赖全量索引、不访问网络。
 """
 from __future__ import annotations

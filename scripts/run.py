@@ -1,9 +1,11 @@
 """项目统一入口：用 conda godotrag 环境运行。
 
 用法（在项目根目录）：
-    C:\\Users\\Kiara\\.conda\\envs\\godotrag\\python.exe scripts\\run.py build
-    C:\\Users\\Kiara\\.conda\\envs\\godotrag\\python.exe scripts\\run.py search "how to free a node" --json
+    python scripts/run.py build
+    python scripts/run.py search "how to free a node" --json
 
+`python` 指 conda 环境 godotrag 的解释器：可先 `conda activate godotrag`，
+或用该环境的 python 绝对路径，也可用 `GODOT_RAG_PYTHON` 记录其位置。
 等价于设置 PYTHONPATH=src 后执行 `python -m godot_rag`。
 """
 from __future__ import annotations
