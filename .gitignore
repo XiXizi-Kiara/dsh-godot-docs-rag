@@ -1,0 +1,19 @@
+# 构建产物 / 大文件（可由脚本重建或另行提供）
+.tmp/
+logs/
+models/
+data/index/
+data/index_smoke/
+data/index_v1_bak/
+data/index_v2/
+data/.cache/
+data/processed/documents.jsonl
+data/processed/chunks.jsonl
+data/processed/smoke_*.jsonl
+godot-docs-html-stable/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/

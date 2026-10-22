@@ -1,0 +1,4430 @@
+{
+  "generated_at": "2026-10-22T12:57:30+08:00",
+  "n_queries": 40,
+  "top_k": 10,
+  "pagehit_k": 5,
+  "configs": [
+    "hybrid",
+    "dense",
+    "bm25"
+  ],
+  "results": {
+    "hybrid": {
+      "overall": {
+        "n_queries": 40,
+        "recall@1": 0.575,
+        "recall@5": 0.85,
+        "recall@10": 0.95,
+        "mrr@10": 0.694,
+        "pagehit@5": 0.95,
+        "latency_ms_mean": 181.95
+      },
+      "by_lang": {
+        "en": {
+          "n_queries": 28,
+          "recall@1": 0.6071,
+          "recall@5": 0.8571,
+          "recall@10": 1.0,
+          "mrr@10": 0.7295,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 236.75
+        },
+        "zh": {
+          "n_queries": 12,
+          "recall@1": 0.5,
+          "recall@5": 0.8333,
+          "recall@10": 0.8333,
+          "mrr@10": 0.6111,
+          "pagehit@5": 0.8333,
+          "latency_ms_mean": 54.11
+        }
+      },
+      "by_doc_type": {
+        "class": {
+          "n_queries": 20,
+          "recall@1": 0.7,
+          "recall@5": 0.9,
+          "recall@10": 0.95,
+          "mrr@10": 0.7692,
+          "pagehit@5": 0.95,
+          "latency_ms_mean": 275.37
+        },
+        "engine_details": {
+          "n_queries": 2,
+          "recall@1": 0.5,
+          "recall@5": 0.5,
+          "recall@10": 0.5,
+          "mrr@10": 0.5,
+          "pagehit@5": 0.5,
+          "latency_ms_mean": 84.0
+        },
+        "getting_started": {
+          "n_queries": 4,
+          "recall@1": 0.5,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.75,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 111.33
+        },
+        "troubleshooting": {
+          "n_queries": 2,
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 79.37
+        },
+        "tutorial": {
+          "n_queries": 12,
+          "recall@1": 0.3333,
+          "recall@5": 0.75,
+          "recall@10": 1.0,
+          "mrr@10": 0.5312,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 83.23
+        }
+      },
+      "n_errors": 0,
+      "failures": [
+        {
+          "qid": "q009",
+          "query": "怎么用 Tween 把某个节点的 position 在 1 秒内平滑移动到目标值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "tween_property",
+            "create_tween"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "getting_started/step_by_step/scripting_first_script"
+            },
+            {
+              "rank": 2,
+              "doc_id": "tutorials/xr/xr_room_scale"
+            },
+            {
+              "rank": 3,
+              "doc_id": "classes/class_graphedit"
+            }
+          ],
+          "error": null
+        },
+        {
+          "qid": "q038",
+          "query": "在 C++ 里自定义一个新的 Object 子类并注册到引擎要怎么写？",
+          "lang": "zh",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/object_class"
+          ],
+          "gold_terms": [
+            "GDCLASS",
+            "memnew"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "engine_details/engine_api/custom_modules_in_cpp"
+            },
+            {
+              "rank": 2,
+              "doc_id": "engine_details/engine_api/custom_modules_in_cpp"
+            },
+            {
+              "rank": 3,
+              "doc_id": "classes/class_engine"
+            }
+          ],
+          "error": null
+        }
+      ],
+      "per_query": [
+        {
+          "qid": "q001",
+          "query": "How do I add a child node to a parent from code, and what happens to its children when the parent is deleted?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "add_child",
+            "unique name"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 3484.71,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_node",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_node",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/plugins/running_code_in_the_editor"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q002",
+          "query": "What is the difference between free() and queue_free() when deleting a node?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node",
+            "classes/class_object"
+          ],
+          "gold_terms": [
+            "queue_free",
+            "end of the current frame"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 120.34,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_object",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_scenetree",
+            "classes/class_node",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "classes/class_node",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "classes/class_editorplugin",
+            "classes/class_tween"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q003",
+          "query": "场景里怎么用节点路径获取子节点？如果路径写错会报什么错？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "get_node",
+            "null instance"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 4,
+          "latency_ms": 49.38,
+          "top_doc_ids": [
+            "engine_details/file_formats/tscn",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_nodepath",
+            "classes/class_node",
+            "tutorials/scripting/scene_unique_nodes",
+            "engine_details/file_formats/tscn",
+            "classes/class_viewporttexture",
+            "classes/class_scenestate",
+            "tutorials/plugins/running_code_in_the_editor",
+            "classes/class_nodepath"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q004",
+          "query": "How can I set a Control node's anchors to a full-rect preset from GDScript?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_control"
+          ],
+          "gold_terms": [
+            "set_anchors_preset",
+            "PRESET_FULL_RECT"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 123.12,
+          "top_doc_ids": [
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "tutorials/ui/size_and_anchors",
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "tutorials/scripting/cross_language_scripting",
+            "classes/class_control",
+            "getting_started/first_3d_game/08.score_and_replay"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q005",
+          "query": "I set velocity on my CharacterBody2D but it never moves. What else must I call every physics frame?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_slide",
+            "_physics_process"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.2,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 5,
+          "latency_ms": 87.7,
+          "top_doc_ids": [
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/2d/2d_movement",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "getting_started/first_3d_game/03.player_movement_code",
+            "classes/class_characterbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q006",
+          "query": "CharacterBody2D.velocity 的单位是什么？是否应该先乘 delta 再赋值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "pixels per second",
+            "delta"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 51.24,
+          "top_doc_ids": [
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "classes/class_characterbody2d",
+            "classes/class_characterbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q007",
+          "query": "How do I play an animation by name with AnimationPlayer and change its playback speed?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_animationplayer"
+          ],
+          "gold_terms": [
+            "speed_scale",
+            "custom_speed"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 93.87,
+          "top_doc_ids": [
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "getting_started/first_3d_game/09.adding_animations",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "getting_started/first_3d_game/09.adding_animations",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animatedsprite2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q008",
+          "query": "What does Signal.connect() return if the same callable is already connected?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_signal"
+          ],
+          "gold_terms": [
+            "ERR_INVALID_PARAMETER",
+            "is_connected"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 102.09,
+          "top_doc_ids": [
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_object",
+            "classes/class_object",
+            "classes/class_signal"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q009",
+          "query": "怎么用 Tween 把某个节点的 position 在 1 秒内平滑移动到目标值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "tween_property",
+            "create_tween"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": null,
+          "latency_ms": 52.11,
+          "top_doc_ids": [
+            "getting_started/step_by_step/scripting_first_script",
+            "tutorials/xr/xr_room_scale",
+            "classes/class_graphedit",
+            "classes/class_node2d",
+            "classes/class_visualshadernodesmoothstep",
+            "classes/class_graphedit",
+            "classes/class_textedit",
+            "tutorials/physics/interpolation/physics_interpolation_introduction",
+            "classes/class_surfacetool",
+            "tutorials/math/interpolation"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q010",
+          "query": "How do I run several Tween tweeners at the same time or make the tween loop forever?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "set_parallel",
+            "set_loops"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 99.0,
+          "top_doc_ids": [
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tweener",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q011",
+          "query": "Does Resource.duplicate() deep-copy nested arrays and resources by default?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "duplicate",
+            "shallow"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 73.16,
+          "top_doc_ids": [
+            "classes/class_resource",
+            "classes/class_array",
+            "classes/class_resource",
+            "classes/class_array",
+            "classes/class_dictionary",
+            "classes/class_resource",
+            "tutorials/migrating/upgrading_to_godot_4.5",
+            "classes/class_dictionary",
+            "classes/class_resource",
+            "classes/class_array"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q012",
+          "query": "What is resource_path for a resource that is embedded inside a scene file?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "resource_path",
+            "PackedScene"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 98.95,
+          "top_doc_ids": [
+            "classes/class_resource",
+            "tutorials/scripting/resources",
+            "classes/class_resourcesaver",
+            "classes/class_resource",
+            "classes/class_resourceimporterscene",
+            "engine_details/file_formats/tscn",
+            "classes/class_resource",
+            "classes/class_resourcesaver",
+            "classes/class_node",
+            "tutorials/scripting/filesystem"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q013",
+          "query": "What is the difference between PhysicsBody2D.move_and_collide() and CharacterBody2D.move_and_slide()?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_physicsbody2d",
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_collide",
+            "KinematicCollision2D"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 108.8,
+          "top_doc_ids": [
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_physicsbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q014",
+          "query": "Which signal tells me that a physics body entered an Area2D, and what must be enabled?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_area2d"
+          ],
+          "gold_terms": [
+            "body_entered",
+            "monitoring"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 103.26,
+          "top_doc_ids": [
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_area3d",
+            "classes/class_area2d",
+            "tutorials/physics/using_area_2d",
+            "classes/class_area2d",
+            "tutorials/physics/physics_introduction",
+            "classes/class_physicsserver2d",
+            "classes/class_rigidbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q015",
+          "query": "When is Timer's timeout signal emitted and how do I make the timer start automatically?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_timer"
+          ],
+          "gold_terms": [
+            "timeout",
+            "autostart"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 114.82,
+          "top_doc_ids": [
+            "classes/class_timer",
+            "classes/class_scenetreetimer",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_timer",
+            "getting_started/step_by_step/signals",
+            "classes/class_timer",
+            "getting_started/first_3d_game/05.spawning_mobs",
+            "engine_details/architecture/unit_testing",
+            "getting_started/step_by_step/signals",
+            "classes/class_scenetreetimer"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q016",
+          "query": "How do I switch to another scene file at runtime and how do I quit the game from code?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_scenetree"
+          ],
+          "gold_terms": [
+            "change_scene_to_file",
+            "quit"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.1,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 10,
+          "latency_ms": 118.57,
+          "top_doc_ids": [
+            "tutorials/scripting/scene_tree",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "tutorials/scripting/scene_tree",
+            "tutorials/plugins/running_code_in_the_editor",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "tutorials/io/runtime_file_loading_and_saving",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "tutorials/scripting/singletons_autoload",
+            "tutorials/xr/setting_up_xr",
+            "classes/class_scenetree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q017",
+          "query": "My RayCast2D gives a stale result for one frame. How can I update it immediately?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_raycast2d"
+          ],
+          "gold_terms": [
+            "force_raycast_update",
+            "_physics_process"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 91.84,
+          "top_doc_ids": [
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast3d",
+            "classes/class_shapecast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast3d",
+            "classes/class_reflectionprobe",
+            "tutorials/physics/ray-casting",
+            "classes/class_shapecast2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q018",
+          "query": "怎么判断输入动作是否被按住？怎么把两个动作（正/负方向）合成一个轴值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_input"
+          ],
+          "gold_terms": [
+            "is_action_pressed",
+            "get_axis"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 41.07,
+          "top_doc_ids": [
+            "classes/class_input",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "classes/class_inputmap",
+            "getting_started/first_3d_game/02.player_input",
+            "classes/class_input",
+            "classes/class_input",
+            "tutorials/xr/xr_action_map",
+            "classes/class_inputmap",
+            "classes/class_inputeventjoypadmotion",
+            "tutorials/inputs/inputevent"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q019",
+          "query": "How do I create a new instance of a scene (.tscn) at runtime and what does PackedScene.instantiate() return?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_packedscene"
+          ],
+          "gold_terms": [
+            "instantiate",
+            "PackedScene"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 396.43,
+          "top_doc_ids": [
+            "tutorials/scripting/nodes_and_scene_instances",
+            "tutorials/scripting/resources",
+            "classes/class_packedscene",
+            "classes/class_packedscene",
+            "tutorials/best_practices/scenes_versus_scripts",
+            "classes/class_scenestate",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_packedscene",
+            "tutorials/scripting/change_scenes_manually",
+            "tutorials/scripting/scene_tree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q020",
+          "query": "How do I send an HTTP request with HTTPRequest and receive the response body?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class"
+          ],
+          "gold_terms": [
+            "request_completed",
+            "HTTPRequest"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 96.89,
+          "top_doc_ids": [
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q021",
+          "query": "2D 移动教程里，输入方向、速度和 velocity 是怎么组合的？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/2d_movement"
+          ],
+          "gold_terms": [
+            "input_direction",
+            "velocity"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 43.71,
+          "top_doc_ids": [
+            "tutorials/xr/xr_room_scale",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "tutorials/2d/2d_movement",
+            "getting_started/first_3d_game/07.killing_player",
+            "getting_started/first_3d_game/09.adding_animations",
+            "tutorials/physics/kinematic_character_2d",
+            "getting_started/first_3d_game/03.player_movement_code",
+            "tutorials/physics/using_character_body_2d",
+            "getting_started/step_by_step/scripting_player_input",
+            "tutorials/xr/xr_room_scale"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q022",
+          "query": "How do I set up a TileMap and what do I need before creating one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/using_tilemaps"
+          ],
+          "gold_terms": [
+            "TileSet",
+            "TileMap"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 101.98,
+          "top_doc_ids": [
+            "tutorials/2d/using_tilesets",
+            "classes/class_tilemaplayer",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "tutorials/2d/using_tilemaps",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "tutorials/2d/using_tilemaps",
+            "tutorials/2d/using_tilesets"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q023",
+          "query": "How do I rotate a 3D object using its transform basis?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/3d/using_transforms"
+          ],
+          "gold_terms": [
+            "transform.basis",
+            "global_transform"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 81.11,
+          "top_doc_ids": [
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "classes/class_transform3d",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/math/matrices_and_transforms",
+            "classes/class_transform3d",
+            "classes/class_transform3d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q024",
+          "query": "GDScript 里怎么声明数组和字典？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "gold_terms": [
+            "Array",
+            "Dictionary"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 4,
+          "latency_ms": 58.68,
+          "top_doc_ids": [
+            "tutorials/plugins/running_code_in_the_editor",
+            "classes/class_@gdscript",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/static_typing",
+            "classes/class_gdscripttextdocument",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/c_sharp/c_sharp_differences",
+            "classes/class_dictionary",
+            "classes/class_array"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q025",
+          "query": "What are the benefits of static typing in GDScript and how do I annotate variables and functions?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "gold_terms": [
+            "static typing",
+            "type hint"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 137.02,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q026",
+          "query": "How do I expose a variable so it can be edited in the Inspector?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_exports"
+          ],
+          "gold_terms": [
+            "@export",
+            "property editor"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 124.44,
+          "top_doc_ids": [
+            "classes/class_editorinspector",
+            "tutorials/scripting/c_sharp/c_sharp_exports",
+            "tutorials/scripting/gdscript/gdscript_exports",
+            "tutorials/scripting/gdscript/gdscript_exports",
+            "tutorials/plugins/editor/inspector_plugins",
+            "classes/class_editorinspector",
+            "classes/class_editorinspector",
+            "classes/class_editorinspectorplugin",
+            "classes/class_editorproperty",
+            "classes/class_editorinspector"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q027",
+          "query": "怎么在场景之间共享玩家分数这类全局数据？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/singletons_autoload"
+          ],
+          "gold_terms": [
+            "Autoload",
+            "singleton"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 82.28,
+          "top_doc_ids": [
+            "tutorials/scripting/singletons_autoload",
+            "getting_started/first_3d_game/08.score_and_replay",
+            "classes/class_renderscenedata",
+            "classes/class_voxelgidata",
+            "classes/class_voxelgidata",
+            "classes/class_renderscenedatard",
+            "classes/class_renderdataextension",
+            "classes/class_gltfdocument",
+            "tutorials/scripting/c_sharp/c_sharp_global_classes",
+            "classes/class_configfile"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q028",
+          "query": "Should I handle gameplay input in _input or _unhandled_input?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/inputs/inputevent"
+          ],
+          "gold_terms": [
+            "_unhandled_input",
+            "_input"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.125,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 8,
+          "latency_ms": 73.03,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_node",
+            "classes/class_viewport",
+            "classes/class_node",
+            "tutorials/scripting/overridable_functions",
+            "classes/class_node",
+            "classes/class_node",
+            "tutorials/inputs/inputevent",
+            "getting_started/step_by_step/scripting_player_input",
+            "classes/class_control"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q029",
+          "query": "怎么让一个函数可以被其他网络对等端调用（RPC）？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/networking/high_level_multiplayer"
+          ],
+          "gold_terms": [
+            "@rpc",
+            "rpc()"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 38.93,
+          "top_doc_ids": [
+            "tutorials/networking/high_level_multiplayer",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_callable",
+            "classes/class_@gdscript",
+            "classes/class_callable",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_node",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_node",
+            "classes/class_@gdscript"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q030",
+          "query": "What is an export preset and how do I create one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/export/exporting_projects"
+          ],
+          "gold_terms": [
+            "export preset",
+            "export template"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 86.35,
+          "top_doc_ids": [
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportplatformextension",
+            "classes/class_editorexportplugin",
+            "classes/class_editorexportplatformextension",
+            "classes/class_editorexportplatform",
+            "tutorials/export/exporting_projects",
+            "classes/class_editorexportpreset",
+            "classes/class_editorexportplatformextension",
+            "tutorials/export/exporting_projects",
+            "classes/class_editorexportplatformextension"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q031",
+          "query": "写 Godot 着色器时，第一行要怎么声明着色器类型？有哪些类型？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/shaders/introduction_to_shaders"
+          ],
+          "gold_terms": [
+            "shader_type",
+            "fragment()"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 90.66,
+          "top_doc_ids": [
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/introduction_to_shaders",
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/introduction_to_shaders",
+            "classes/class_visualshader",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "classes/class_renderingserver"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q032",
+          "query": "When should I use AnimationTree instead of calling AnimationPlayer directly?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/animation/animation_tree"
+          ],
+          "gold_terms": [
+            "AnimationTree",
+            "AnimationPlayer"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 80.57,
+          "top_doc_ids": [
+            "classes/class_animationtree",
+            "tutorials/animation/animation_tree",
+            "tutorials/best_practices/data_preferences",
+            "tutorials/animation/animation_tree",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationtree",
+            "classes/class_animationmixer",
+            "classes/class_animationmixer",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationtree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q033",
+          "query": "What is the relationship between nodes and scenes in a Godot project?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/nodes_and_scenes"
+          ],
+          "gold_terms": [
+            "nodes",
+            "scenes"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 147.38,
+          "top_doc_ids": [
+            "tutorials/best_practices/what_are_godot_classes",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "classes/class_node",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/step_by_step/instancing",
+            "getting_started/introduction/key_concepts_overview",
+            "tutorials/scripting/scene_unique_nodes",
+            "classes/class_scenetree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q034",
+          "query": "怎么做才能把按钮的 pressed 信号连接到脚本函数上？",
+          "lang": "zh",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/signals"
+          ],
+          "gold_terms": [
+            "pressed",
+            "signal"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 46.23,
+          "top_doc_ids": [
+            "getting_started/step_by_step/signals",
+            "getting_started/step_by_step/signals",
+            "classes/class_signal",
+            "classes/class_signal",
+            "tutorials/scripting/c_sharp/c_sharp_signals",
+            "getting_started/step_by_step/signals",
+            "classes/class_xrcontroller3d",
+            "classes/class_basebutton",
+            "tutorials/scripting/cross_language_scripting",
+            "classes/class_touchscreenbutton"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q035",
+          "query": "How do I attach my first script and print a message when the scene runs?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/scripting_first_script"
+          ],
+          "gold_terms": [
+            "_init",
+            "print"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 111.5,
+          "top_doc_ids": [
+            "classes/class_editordebuggerplugin",
+            "getting_started/step_by_step/scripting_first_script",
+            "getting_started/step_by_step/scripting_first_script",
+            "tutorials/scripting/debug/output_panel",
+            "classes/class_enginedebugger",
+            "engine_details/architecture/common_engine_methods_and_macros",
+            "tutorials/plugins/running_code_in_the_editor",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q036",
+          "query": "What are the four key concepts a beginner should learn first in Godot?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/introduction/key_concepts_overview"
+          ],
+          "gold_terms": [
+            "four concepts",
+            "signals"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 140.2,
+          "top_doc_ids": [
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/introduction_to_godot",
+            "getting_started/introduction/index",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/first_2d_game/07.finishing-up",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/first_3d_game/going_further",
+            "getting_started/step_by_step/index",
+            "getting_started/first_2d_game/index"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q037",
+          "query": "What 2D coordinate systems does Godot expose, and when do I work in item coordinates vs canvas coordinates?",
+          "lang": "en",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems"
+          ],
+          "gold_terms": [
+            "Item Coordinates",
+            "Canvas Coordinates"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 121.35,
+          "top_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "tutorials/2d/2d_transforms",
+            "tutorials/2d/2d_transforms",
+            "engine_details/architecture/2d_coordinate_systems",
+            "about/docs_changelog",
+            "engine_details/architecture/2d_coordinate_systems",
+            "tutorials/2d/canvas_layers",
+            "tutorials/2d/2d_transforms"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q038",
+          "query": "在 C++ 里自定义一个新的 Object 子类并注册到引擎要怎么写？",
+          "lang": "zh",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/object_class"
+          ],
+          "gold_terms": [
+            "GDCLASS",
+            "memnew"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": null,
+          "latency_ms": 46.66,
+          "top_doc_ids": [
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "classes/class_engine",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "classes/class_enginedebugger",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/architecture/common_engine_methods_and_macros"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q039",
+          "query": "高速移动的物理物体穿过墙壁（tunneling）该怎么解决？",
+          "lang": "zh",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues"
+          ],
+          "gold_terms": [
+            "tunneling",
+            "Continuous CD"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 48.34,
+          "top_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues",
+            "tutorials/physics/troubleshooting_physics_issues",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_tileset",
+            "tutorials/rendering/jitter_stutter",
+            "tutorials/physics/physics_introduction",
+            "tutorials/3d/particles/turbulence",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/2d/2d_movement",
+            "getting_started/first_3d_game/03.player_movement_code"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q040",
+          "query": "How do I make a GDScript warning, such as an unused variable, fail the build as an error?",
+          "lang": "en",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system"
+          ],
+          "gold_terms": [
+            "unused_variable",
+            "warning"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 110.39,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system",
+            "tutorials/scripting/debug/overview_of_debugging_tools",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_@gdscript",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "error": null
+        }
+      ]
+    },
+    "dense": {
+      "overall": {
+        "n_queries": 40,
+        "recall@1": 0.5,
+        "recall@5": 0.85,
+        "recall@10": 0.925,
+        "mrr@10": 0.645,
+        "pagehit@5": 0.925,
+        "latency_ms_mean": 42.46
+      },
+      "by_lang": {
+        "en": {
+          "n_queries": 28,
+          "recall@1": 0.6071,
+          "recall@5": 0.8929,
+          "recall@10": 0.9643,
+          "mrr@10": 0.7277,
+          "pagehit@5": 0.9643,
+          "latency_ms_mean": 44.34
+        },
+        "zh": {
+          "n_queries": 12,
+          "recall@1": 0.25,
+          "recall@5": 0.75,
+          "recall@10": 0.8333,
+          "mrr@10": 0.4522,
+          "pagehit@5": 0.8333,
+          "latency_ms_mean": 38.09
+        }
+      },
+      "by_doc_type": {
+        "class": {
+          "n_queries": 20,
+          "recall@1": 0.7,
+          "recall@5": 0.85,
+          "recall@10": 0.85,
+          "mrr@10": 0.7542,
+          "pagehit@5": 0.95,
+          "latency_ms_mean": 44.28
+        },
+        "engine_details": {
+          "n_queries": 2,
+          "recall@1": 0.5,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.75,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 41.08
+        },
+        "getting_started": {
+          "n_queries": 4,
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.4583,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 41.77
+        },
+        "troubleshooting": {
+          "n_queries": 2,
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 41.43
+        },
+        "tutorial": {
+          "n_queries": 12,
+          "recall@1": 0.25,
+          "recall@5": 0.75,
+          "recall@10": 1.0,
+          "mrr@10": 0.4487,
+          "pagehit@5": 0.8333,
+          "latency_ms_mean": 40.07
+        }
+      },
+      "n_errors": 0,
+      "failures": [
+        {
+          "qid": "q009",
+          "query": "怎么用 Tween 把某个节点的 position 在 1 秒内平滑移动到目标值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "tween_property",
+            "create_tween"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "tutorials/math/interpolation"
+            },
+            {
+              "rank": 2,
+              "doc_id": "classes/class_@globalscope"
+            },
+            {
+              "rank": 3,
+              "doc_id": "getting_started/step_by_step/scripting_first_script"
+            }
+          ],
+          "error": null
+        },
+        {
+          "qid": "q026",
+          "query": "How do I expose a variable so it can be edited in the Inspector?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_exports"
+          ],
+          "gold_terms": [
+            "@export",
+            "property editor"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "tutorials/plugins/editor/inspector_plugins"
+            },
+            {
+              "rank": 2,
+              "doc_id": "classes/class_editorinspector"
+            },
+            {
+              "rank": 3,
+              "doc_id": "tutorials/plugins/editor/inspector_plugins"
+            }
+          ],
+          "error": null
+        },
+        {
+          "qid": "q027",
+          "query": "怎么在场景之间共享玩家分数这类全局数据？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/singletons_autoload"
+          ],
+          "gold_terms": [
+            "Autoload",
+            "singleton"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "tutorials/scripting/c_sharp/c_sharp_global_classes"
+            },
+            {
+              "rank": 2,
+              "doc_id": "about/list_of_features"
+            },
+            {
+              "rank": 3,
+              "doc_id": "classes/class_projectsettings"
+            }
+          ],
+          "error": null
+        }
+      ],
+      "per_query": [
+        {
+          "qid": "q001",
+          "query": "How do I add a child node to a parent from code, and what happens to its children when the parent is deleted?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "add_child",
+            "unique name"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 47.08,
+          "top_doc_ids": [
+            "classes/class_node",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_node",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_node",
+            "classes/class_node",
+            "classes/class_node",
+            "tutorials/best_practices/scene_organization"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q002",
+          "query": "What is the difference between free() and queue_free() when deleting a node?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node",
+            "classes/class_object"
+          ],
+          "gold_terms": [
+            "queue_free",
+            "end of the current frame"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 45.04,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_object",
+            "classes/class_scenetree",
+            "classes/class_object",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_renderingserver",
+            "classes/class_node",
+            "classes/class_physicsserver2d",
+            "classes/class_physicsserver3d",
+            "classes/class_navigationserver3d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q003",
+          "query": "场景里怎么用节点路径获取子节点？如果路径写错会报什么错？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "get_node",
+            "null instance"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": null,
+          "latency_ms": 39.7,
+          "top_doc_ids": [
+            "classes/class_nodepath",
+            "engine_details/file_formats/tscn",
+            "engine_details/file_formats/tscn",
+            "engine_details/file_formats/tscn",
+            "classes/class_nodepath",
+            "engine_details/architecture/core_types",
+            "classes/class_scenestate",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_nodepath",
+            "classes/class_nodepath"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q004",
+          "query": "How can I set a Control node's anchors to a full-rect preset from GDScript?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_control"
+          ],
+          "gold_terms": [
+            "set_anchors_preset",
+            "PRESET_FULL_RECT"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 42.72,
+          "top_doc_ids": [
+            "classes/class_control",
+            "classes/class_control",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_control",
+            "tutorials/ui/size_and_anchors",
+            "classes/class_control",
+            "tutorials/ui/size_and_anchors",
+            "tutorials/xr/openxr_composition_layers",
+            "tutorials/scripting/cross_language_scripting",
+            "tutorials/navigation/navigation_using_navigationlinks"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q005",
+          "query": "I set velocity on my CharacterBody2D but it never moves. What else must I call every physics frame?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_slide",
+            "_physics_process"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 4,
+          "latency_ms": 45.28,
+          "top_doc_ids": [
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "classes/class_characterbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q006",
+          "query": "CharacterBody2D.velocity 的单位是什么？是否应该先乘 delta 再赋值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "pixels per second",
+            "delta"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 43.12,
+          "top_doc_ids": [
+            "classes/class_characterbody2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "classes/class_characterbody3d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q007",
+          "query": "How do I play an animation by name with AnimationPlayer and change its playback speed?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_animationplayer"
+          ],
+          "gold_terms": [
+            "speed_scale",
+            "custom_speed"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 42.49,
+          "top_doc_ids": [
+            "classes/class_animationplayer",
+            "classes/class_animatedsprite2d",
+            "classes/class_animatedsprite3d",
+            "classes/class_animationplayer",
+            "classes/class_animatedsprite3d",
+            "classes/class_animatedsprite2d",
+            "classes/class_animationplayer",
+            "getting_started/first_3d_game/09.adding_animations",
+            "tutorials/animation/animation_track_types",
+            "getting_started/first_3d_game/09.adding_animations"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q008",
+          "query": "What does Signal.connect() return if the same callable is already connected?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_signal"
+          ],
+          "gold_terms": [
+            "ERR_INVALID_PARAMETER",
+            "is_connected"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 40.91,
+          "top_doc_ids": [
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_object",
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_object"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q009",
+          "query": "怎么用 Tween 把某个节点的 position 在 1 秒内平滑移动到目标值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "tween_property",
+            "create_tween"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": null,
+          "latency_ms": 36.04,
+          "top_doc_ids": [
+            "tutorials/math/interpolation",
+            "classes/class_@globalscope",
+            "getting_started/step_by_step/scripting_first_script",
+            "tutorials/physics/interpolation/using_physics_interpolation",
+            "classes/class_characterbody2d",
+            "classes/class_characterbody3d",
+            "tutorials/animation/animation_tree",
+            "getting_started/step_by_step/scripting_first_script",
+            "classes/class_node2d",
+            "classes/class_animationnode"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q010",
+          "query": "How do I run several Tween tweeners at the same time or make the tween loop forever?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "set_parallel",
+            "set_loops"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 44.93,
+          "top_doc_ids": [
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q011",
+          "query": "Does Resource.duplicate() deep-copy nested arrays and resources by default?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "duplicate",
+            "shallow"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 40.29,
+          "top_doc_ids": [
+            "classes/class_resource",
+            "classes/class_resource",
+            "classes/class_array",
+            "classes/class_array",
+            "classes/class_resource",
+            "tutorials/migrating/upgrading_to_godot_4.5",
+            "classes/class_dictionary",
+            "classes/class_dictionary",
+            "classes/class_packedbytearray",
+            "classes/class_resource"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q012",
+          "query": "What is resource_path for a resource that is embedded inside a scene file?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "resource_path",
+            "PackedScene"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 41.61,
+          "top_doc_ids": [
+            "classes/class_resource",
+            "engine_details/file_formats/tscn",
+            "classes/class_resourceimporterscene",
+            "tutorials/scripting/resources",
+            "classes/class_resourcesaver",
+            "classes/class_resourceimportertextureatlas",
+            "classes/class_resource",
+            "classes/class_resourceimportertextureatlas",
+            "engine_details/file_formats/tscn",
+            "classes/class_resourceimporterobj"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q013",
+          "query": "What is the difference between PhysicsBody2D.move_and_collide() and CharacterBody2D.move_and_slide()?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_physicsbody2d",
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_collide",
+            "KinematicCollision2D"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 55.97,
+          "top_doc_ids": [
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/physics_introduction",
+            "classes/class_physicsbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody3d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q014",
+          "query": "Which signal tells me that a physics body entered an Area2D, and what must be enabled?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_area2d"
+          ],
+          "gold_terms": [
+            "body_entered",
+            "monitoring"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 44.99,
+          "top_doc_ids": [
+            "classes/class_area2d",
+            "tutorials/physics/physics_introduction",
+            "classes/class_rigidbody2d",
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_physicsserver2d",
+            "classes/class_area3d",
+            "classes/class_area2d",
+            "classes/class_rigidbody2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q015",
+          "query": "When is Timer's timeout signal emitted and how do I make the timer start automatically?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_timer"
+          ],
+          "gold_terms": [
+            "timeout",
+            "autostart"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 50.05,
+          "top_doc_ids": [
+            "classes/class_timer",
+            "classes/class_scenetreetimer",
+            "classes/class_timer",
+            "getting_started/first_3d_game/05.spawning_mobs",
+            "classes/class_timer",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "getting_started/step_by_step/signals",
+            "engine_details/architecture/unit_testing",
+            "classes/class_scenetreetimer",
+            "classes/class_editordebuggersession"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q016",
+          "query": "How do I switch to another scene file at runtime and how do I quit the game from code?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_scenetree"
+          ],
+          "gold_terms": [
+            "change_scene_to_file",
+            "quit"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": null,
+          "latency_ms": 44.24,
+          "top_doc_ids": [
+            "tutorials/scripting/scene_tree",
+            "tutorials/scripting/scene_tree",
+            "tutorials/scripting/singletons_autoload",
+            "tutorials/scripting/singletons_autoload",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "tutorials/scripting/change_scenes_manually",
+            "tutorials/best_practices/scene_organization",
+            "tutorials/scripting/change_scenes_manually",
+            "tutorials/io/background_loading",
+            "getting_started/step_by_step/nodes_and_scenes"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q017",
+          "query": "My RayCast2D gives a stale result for one frame. How can I update it immediately?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_raycast2d"
+          ],
+          "gold_terms": [
+            "force_raycast_update",
+            "_physics_process"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 44.7,
+          "top_doc_ids": [
+            "classes/class_raycast2d",
+            "classes/class_raycast3d",
+            "classes/class_reflectionprobe",
+            "classes/class_world2d",
+            "classes/class_raycast2d",
+            "classes/class_animatedsprite2d",
+            "classes/class_physicsdirectbodystate2d",
+            "classes/class_physicsdirectspacestate2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q018",
+          "query": "怎么判断输入动作是否被按住？怎么把两个动作（正/负方向）合成一个轴值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_input"
+          ],
+          "gold_terms": [
+            "is_action_pressed",
+            "get_axis"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 38.32,
+          "top_doc_ids": [
+            "classes/class_input",
+            "tutorials/inputs/inputevent",
+            "tutorials/xr/openxr_hand_tracking",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "tutorials/xr/xr_action_map",
+            "tutorials/xr/webxr_intro",
+            "classes/class_inputmap",
+            "tutorials/xr/xr_action_map",
+            "about/list_of_features",
+            "classes/class_input"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q019",
+          "query": "How do I create a new instance of a scene (.tscn) at runtime and what does PackedScene.instantiate() return?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_packedscene"
+          ],
+          "gold_terms": [
+            "instantiate",
+            "PackedScene"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 48.58,
+          "top_doc_ids": [
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_packedscene",
+            "tutorials/scripting/resources",
+            "classes/class_packedscene",
+            "tutorials/scripting/scene_tree",
+            "classes/class_instanceplaceholder",
+            "classes/class_packedscene",
+            "getting_started/step_by_step/instancing",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_scenetree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q020",
+          "query": "How do I send an HTTP request with HTTPRequest and receive the response body?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class"
+          ],
+          "gold_terms": [
+            "request_completed",
+            "HTTPRequest"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 49.56,
+          "top_doc_ids": [
+            "classes/class_httprequest",
+            "classes/class_httpclient",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class",
+            "classes/class_httpclient",
+            "tutorials/networking/http_request_class",
+            "classes/class_httprequest"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q021",
+          "query": "2D 移动教程里，输入方向、速度和 velocity 是怎么组合的？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/2d_movement"
+          ],
+          "gold_terms": [
+            "input_direction",
+            "velocity"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 40.92,
+          "top_doc_ids": [
+            "tutorials/xr/xr_room_scale",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "tutorials/2d/2d_movement",
+            "tutorials/xr/xr_room_scale",
+            "classes/class_inputeventaction",
+            "tutorials/inputs/inputevent",
+            "tutorials/xr/xr_room_scale",
+            "getting_started/first_3d_game/07.killing_player",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "tutorials/physics/using_character_body_2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q022",
+          "query": "How do I set up a TileMap and what do I need before creating one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/using_tilemaps"
+          ],
+          "gold_terms": [
+            "TileSet",
+            "TileMap"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 43.39,
+          "top_doc_ids": [
+            "tutorials/2d/using_tilemaps",
+            "tutorials/2d/using_tilesets",
+            "tutorials/2d/using_tilemaps",
+            "classes/class_tilemap",
+            "tutorials/2d/using_tilemaps",
+            "tutorials/2d/using_tilemaps",
+            "classes/class_tilemaplayer",
+            "tutorials/3d/using_gridmaps",
+            "tutorials/2d/using_tilemaps",
+            "tutorials/2d/using_tilesets"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q023",
+          "query": "How do I rotate a 3D object using its transform basis?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/3d/using_transforms"
+          ],
+          "gold_terms": [
+            "transform.basis",
+            "global_transform"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 39.06,
+          "top_doc_ids": [
+            "tutorials/3d/using_transforms",
+            "classes/class_transform3d",
+            "tutorials/3d/using_transforms",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "classes/class_transform3d",
+            "classes/class_transform3d",
+            "tutorials/math/matrices_and_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/math/matrices_and_transforms"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q024",
+          "query": "GDScript 里怎么声明数组和字典？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "gold_terms": [
+            "Array",
+            "Dictionary"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.2,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 5,
+          "latency_ms": 34.7,
+          "top_doc_ids": [
+            "classes/class_dictionary",
+            "classes/class_array",
+            "classes/class_array",
+            "classes/class_dictionary",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/gdscript_exports",
+            "classes/class_array",
+            "classes/class_dictionary",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/shaders/shader_reference/shading_language"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q025",
+          "query": "What are the benefits of static typing in GDScript and how do I annotate variables and functions?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "gold_terms": [
+            "static typing",
+            "type hint"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 44.39,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_advanced",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q026",
+          "query": "How do I expose a variable so it can be edited in the Inspector?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_exports"
+          ],
+          "gold_terms": [
+            "@export",
+            "property editor"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 40.39,
+          "top_doc_ids": [
+            "tutorials/plugins/editor/inspector_plugins",
+            "classes/class_editorinspector",
+            "tutorials/plugins/editor/inspector_plugins",
+            "tutorials/scripting/c_sharp/c_sharp_exports",
+            "classes/class_editorproperty",
+            "tutorials/scripting/gdscript/gdscript_exports",
+            "tutorials/plugins/editor/inspector_plugins",
+            "classes/class_editorinspector",
+            "classes/class_editorinterface",
+            "classes/class_editorinspector"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q027",
+          "query": "怎么在场景之间共享玩家分数这类全局数据？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/singletons_autoload"
+          ],
+          "gold_terms": [
+            "Autoload",
+            "singleton"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.14285714285714285,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": 7,
+          "latency_ms": 40.49,
+          "top_doc_ids": [
+            "tutorials/scripting/c_sharp/c_sharp_global_classes",
+            "about/list_of_features",
+            "classes/class_projectsettings",
+            "tutorials/shaders/shader_reference/shader_functions",
+            "classes/class_scenemultiplayer",
+            "classes/class_projectsettings",
+            "tutorials/scripting/singletons_autoload",
+            "tutorials/xr/openxr_spatial_entities",
+            "tutorials/xr/openxr_spatial_entities",
+            "classes/class_resourceimporterscene"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q028",
+          "query": "Should I handle gameplay input in _input or _unhandled_input?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/inputs/inputevent"
+          ],
+          "gold_terms": [
+            "_unhandled_input",
+            "_input"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 42.32,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_node",
+            "tutorials/inputs/inputevent",
+            "tutorials/inputs/inputevent",
+            "classes/class_node",
+            "tutorials/inputs/inputevent",
+            "classes/class_viewport",
+            "classes/class_input",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "tutorials/xr/openxr_hand_tracking"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q029",
+          "query": "怎么让一个函数可以被其他网络对等端调用（RPC）？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/networking/high_level_multiplayer"
+          ],
+          "gold_terms": [
+            "@rpc",
+            "rpc()"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 37.08,
+          "top_doc_ids": [
+            "classes/class_@gdscript",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_callable",
+            "classes/class_signal",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_signal",
+            "classes/class_callable",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_multiplayerspawner"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q030",
+          "query": "What is an export preset and how do I create one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/export/exporting_projects"
+          ],
+          "gold_terms": [
+            "export preset",
+            "export template"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.125,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 8,
+          "latency_ms": 40.15,
+          "top_doc_ids": [
+            "classes/class_editorexportplugin",
+            "classes/class_editorexportplatformextension",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportplatformextension",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportpreset",
+            "classes/class_editorexportplatformextension",
+            "tutorials/export/exporting_projects",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportpreset"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q031",
+          "query": "写 Godot 着色器时，第一行要怎么声明着色器类型？有哪些类型？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/shaders/introduction_to_shaders"
+          ],
+          "gold_terms": [
+            "shader_type",
+            "fragment()"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 4,
+          "latency_ms": 36.84,
+          "top_doc_ids": [
+            "tutorials/shaders/shader_reference/shader_functions",
+            "classes/class_visualshader",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "tutorials/shaders/introduction_to_shaders",
+            "tutorials/shaders/shaders_style_guide",
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/shader_reference/shading_language",
+            "classes/class_shadermaterial",
+            "tutorials/shaders/shader_reference/shading_language",
+            "classes/class_renderingserver"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q032",
+          "query": "When should I use AnimationTree instead of calling AnimationPlayer directly?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/animation/animation_tree"
+          ],
+          "gold_terms": [
+            "AnimationTree",
+            "AnimationPlayer"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 41.09,
+          "top_doc_ids": [
+            "classes/class_animationtree",
+            "tutorials/best_practices/data_preferences",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationmixer",
+            "classes/class_animationplayer",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationnodestatemachineplayback",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationtree",
+            "classes/class_animationnodestatemachine"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q033",
+          "query": "What is the relationship between nodes and scenes in a Godot project?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/nodes_and_scenes"
+          ],
+          "gold_terms": [
+            "nodes",
+            "scenes"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 39.85,
+          "top_doc_ids": [
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "getting_started/introduction/key_concepts_overview",
+            "tutorials/best_practices/what_are_godot_classes",
+            "classes/class_node",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "tutorials/scripting/scene_tree",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "tutorials/best_practices/scene_organization"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q034",
+          "query": "怎么做才能把按钮的 pressed 信号连接到脚本函数上？",
+          "lang": "zh",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/signals"
+          ],
+          "gold_terms": [
+            "pressed",
+            "signal"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 35.79,
+          "top_doc_ids": [
+            "classes/class_signal",
+            "getting_started/step_by_step/signals",
+            "getting_started/step_by_step/signals",
+            "classes/class_scriptcreatedialog",
+            "classes/class_signal",
+            "classes/class_scriptextension",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/c_sharp/c_sharp_signals",
+            "classes/class_script",
+            "classes/class_scripteditor"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q035",
+          "query": "How do I attach my first script and print a message when the scene runs?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/scripting_first_script"
+          ],
+          "gold_terms": [
+            "_init",
+            "print"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 43.34,
+          "top_doc_ids": [
+            "classes/class_editordebuggerplugin",
+            "getting_started/step_by_step/scripting_first_script",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "getting_started/step_by_step/scripting_first_script",
+            "tutorials/scripting/logging",
+            "tutorials/scripting/debug/output_panel",
+            "getting_started/step_by_step/signals",
+            "tutorials/scripting/instancing_with_signals",
+            "getting_started/step_by_step/scripting_first_script",
+            "getting_started/first_2d_game/06.heads_up_display"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q036",
+          "query": "What are the four key concepts a beginner should learn first in Godot?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/introduction/key_concepts_overview"
+          ],
+          "gold_terms": [
+            "four concepts",
+            "signals"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 48.12,
+          "top_doc_ids": [
+            "getting_started/introduction/index",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/introduction_to_godot",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/learning_new_features",
+            "getting_started/step_by_step/index",
+            "getting_started/first_2d_game/07.finishing-up",
+            "tutorials/best_practices/introduction_best_practices",
+            "getting_started/introduction/learning_new_features",
+            "getting_started/step_by_step/scripting_first_script"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q037",
+          "query": "What 2D coordinate systems does Godot expose, and when do I work in item coordinates vs canvas coordinates?",
+          "lang": "en",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems"
+          ],
+          "gold_terms": [
+            "Item Coordinates",
+            "Canvas Coordinates"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 44.8,
+          "top_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "tutorials/2d/introduction_to_2d",
+            "tutorials/2d/2d_transforms",
+            "tutorials/2d/2d_transforms",
+            "tutorials/2d/introduction_to_2d",
+            "tutorials/2d/canvas_layers",
+            "classes/class_basis",
+            "tutorials/3d/introduction_to_3d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q038",
+          "query": "在 C++ 里自定义一个新的 Object 子类并注册到引擎要怎么写？",
+          "lang": "zh",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/object_class"
+          ],
+          "gold_terms": [
+            "GDCLASS",
+            "memnew"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 37.36,
+          "top_doc_ids": [
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "engine_details/architecture/object_class",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "classes/class_engineprofiler",
+            "engine_details/architecture/object_class",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "classes/class_editorplugin",
+            "classes/class_engine"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q039",
+          "query": "高速移动的物理物体穿过墙壁（tunneling）该怎么解决？",
+          "lang": "zh",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues"
+          ],
+          "gold_terms": [
+            "tunneling",
+            "Continuous CD"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 36.67,
+          "top_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues",
+            "tutorials/physics/troubleshooting_physics_issues",
+            "classes/class_tileset",
+            "tutorials/performance/cpu_optimization",
+            "tutorials/physics/interpolation/using_physics_interpolation",
+            "tutorials/rendering/jitter_stutter",
+            "tutorials/performance/cpu_optimization",
+            "classes/class_physicsbody3d",
+            "tutorials/physics/interpolation/using_physics_interpolation",
+            "tutorials/physics/interpolation/physics_interpolation_introduction"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q040",
+          "query": "How do I make a GDScript warning, such as an unused variable, fail the build as an error?",
+          "lang": "en",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system"
+          ],
+          "gold_terms": [
+            "unused_variable",
+            "warning"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 46.19,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system",
+            "tutorials/scripting/debug/overview_of_debugging_tools",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "tutorials/scripting/gdscript/warning_system",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings"
+          ],
+          "error": null
+        }
+      ]
+    },
+    "bm25": {
+      "overall": {
+        "n_queries": 40,
+        "recall@1": 0.475,
+        "recall@5": 0.7,
+        "recall@10": 0.9,
+        "mrr@10": 0.5896,
+        "pagehit@5": 0.95,
+        "latency_ms_mean": 46.45
+      },
+      "by_lang": {
+        "en": {
+          "n_queries": 28,
+          "recall@1": 0.5357,
+          "recall@5": 0.75,
+          "recall@10": 0.9643,
+          "mrr@10": 0.6516,
+          "pagehit@5": 0.9643,
+          "latency_ms_mean": 60.74
+        },
+        "zh": {
+          "n_queries": 12,
+          "recall@1": 0.3333,
+          "recall@5": 0.5833,
+          "recall@10": 0.75,
+          "mrr@10": 0.4448,
+          "pagehit@5": 0.9167,
+          "latency_ms_mean": 13.11
+        }
+      },
+      "by_doc_type": {
+        "class": {
+          "n_queries": 20,
+          "recall@1": 0.5,
+          "recall@5": 0.8,
+          "recall@10": 0.95,
+          "mrr@10": 0.6544,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 49.53
+        },
+        "engine_details": {
+          "n_queries": 2,
+          "recall@1": 0.5,
+          "recall@5": 0.5,
+          "recall@10": 0.5,
+          "mrr@10": 0.5,
+          "pagehit@5": 0.5,
+          "latency_ms_mean": 42.82
+        },
+        "getting_started": {
+          "n_queries": 4,
+          "recall@1": 0.5,
+          "recall@5": 0.75,
+          "recall@10": 1.0,
+          "mrr@10": 0.5917,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 65.02
+        },
+        "troubleshooting": {
+          "n_queries": 2,
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "latency_ms_mean": 36.6
+        },
+        "tutorial": {
+          "n_queries": 12,
+          "recall@1": 0.3333,
+          "recall@5": 0.5,
+          "recall@10": 0.8333,
+          "mrr@10": 0.4274,
+          "pagehit@5": 0.9167,
+          "latency_ms_mean": 37.39
+        }
+      },
+      "n_errors": 0,
+      "failures": [
+        {
+          "qid": "q026",
+          "query": "How do I expose a variable so it can be edited in the Inspector?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_exports"
+          ],
+          "gold_terms": [
+            "@export",
+            "property editor"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "classes/class_editorinspector"
+            },
+            {
+              "rank": 2,
+              "doc_id": "getting_started/introduction/index"
+            },
+            {
+              "rank": 3,
+              "doc_id": "classes/class_visualshadernodeparameter"
+            }
+          ],
+          "error": null
+        },
+        {
+          "qid": "q038",
+          "query": "在 C++ 里自定义一个新的 Object 子类并注册到引擎要怎么写？",
+          "lang": "zh",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/object_class"
+          ],
+          "gold_terms": [
+            "GDCLASS",
+            "memnew"
+          ],
+          "top3": [
+            {
+              "rank": 1,
+              "doc_id": "engine_details/engine_api/gdextension/gdextension_c_example"
+            },
+            {
+              "rank": 2,
+              "doc_id": "engine_details/engine_api/gdextension/gdextension_c_example"
+            },
+            {
+              "rank": 3,
+              "doc_id": "classes/class_engine"
+            }
+          ],
+          "error": null
+        }
+      ],
+      "per_query": [
+        {
+          "qid": "q001",
+          "query": "How do I add a child node to a parent from code, and what happens to its children when the parent is deleted?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "add_child",
+            "unique name"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 101.33,
+          "top_doc_ids": [
+            "classes/class_node",
+            "tutorials/scripting/pausing_games",
+            "tutorials/scripting/instancing_with_signals",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_undoredo",
+            "tutorials/best_practices/data_preferences",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_node",
+            "classes/class_undoredo",
+            "tutorials/best_practices/scenes_versus_scripts"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q002",
+          "query": "What is the difference between free() and queue_free() when deleting a node?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node",
+            "classes/class_object"
+          ],
+          "gold_terms": [
+            "queue_free",
+            "end of the current frame"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 75.36,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_object",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "classes/class_editorplugin",
+            "classes/class_scenetree",
+            "classes/class_window",
+            "tutorials/scripting/nodes_and_scene_instances",
+            "classes/class_callbacktweener",
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q003",
+          "query": "场景里怎么用节点路径获取子节点？如果路径写错会报什么错？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_node"
+          ],
+          "gold_terms": [
+            "get_node",
+            "null instance"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": null,
+          "latency_ms": 10.85,
+          "top_doc_ids": [
+            "tutorials/best_practices/scene_organization",
+            "tutorials/xr/openxr_spatial_entities",
+            "classes/class_packedscene",
+            "classes/class_packedscene",
+            "tutorials/performance/thread_safe_apis",
+            "tutorials/scripting/scene_unique_nodes",
+            "engine_details/file_formats/tscn",
+            "getting_started/first_3d_game/05.spawning_mobs",
+            "getting_started/first_3d_game/05.spawning_mobs",
+            "classes/class_nodepath"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q004",
+          "query": "How can I set a Control node's anchors to a full-rect preset from GDScript?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_control"
+          ],
+          "gold_terms": [
+            "set_anchors_preset",
+            "PRESET_FULL_RECT"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 73.26,
+          "top_doc_ids": [
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "classes/class_control",
+            "tutorials/ui/size_and_anchors",
+            "getting_started/first_2d_game/07.finishing-up",
+            "tutorials/plugins/editor/making_plugins",
+            "getting_started/first_3d_game/08.score_and_replay"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q005",
+          "query": "I set velocity on my CharacterBody2D but it never moves. What else must I call every physics frame?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_slide",
+            "_physics_process"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 38.42,
+          "top_doc_ids": [
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/2d/2d_movement",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/kinematic_character_2d",
+            "classes/class_characterbody2d",
+            "getting_started/first_3d_game/03.player_movement_code",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/using_character_body_2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q006",
+          "query": "CharacterBody2D.velocity 的单位是什么？是否应该先乘 delta 再赋值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "pixels per second",
+            "delta"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 3.31,
+          "top_doc_ids": [
+            "tutorials/physics/kinematic_character_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_characterbody2d",
+            "classes/class_characterbody2d",
+            "tutorials/physics/physics_introduction"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q007",
+          "query": "How do I play an animation by name with AnimationPlayer and change its playback speed?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_animationplayer"
+          ],
+          "gold_terms": [
+            "speed_scale",
+            "custom_speed"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 43.63,
+          "top_doc_ids": [
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "classes/class_animationplayer",
+            "getting_started/first_3d_game/09.adding_animations",
+            "classes/class_animationtree",
+            "classes/class_animationplayer"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q008",
+          "query": "What does Signal.connect() return if the same callable is already connected?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_signal"
+          ],
+          "gold_terms": [
+            "ERR_INVALID_PARAMETER",
+            "is_connected"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 58.09,
+          "top_doc_ids": [
+            "classes/class_object",
+            "classes/class_signal",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_signal",
+            "classes/class_object",
+            "classes/class_signal",
+            "tutorials/best_practices/scene_organization",
+            "classes/class_object",
+            "classes/class_object"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q009",
+          "query": "怎么用 Tween 把某个节点的 position 在 1 秒内平滑移动到目标值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "tween_property",
+            "create_tween"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 14.36,
+          "top_doc_ids": [
+            "classes/class_propertytweener",
+            "classes/class_propertytweener",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_propertytweener",
+            "classes/class_tween",
+            "classes/class_tween",
+            "classes/class_tween"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q010",
+          "query": "How do I run several Tween tweeners at the same time or make the tween loop forever?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_tween"
+          ],
+          "gold_terms": [
+            "set_parallel",
+            "set_loops"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 48.16,
+          "top_doc_ids": [
+            "classes/class_tween",
+            "classes/class_tween",
+            "getting_started/introduction/index",
+            "classes/class_tweener",
+            "classes/class_propertytweener",
+            "tutorials/3d/3d_antialiasing",
+            "classes/class_tween",
+            "tutorials/shaders/shader_reference/shading_language",
+            "classes/class_tween",
+            "classes/class_tween"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q011",
+          "query": "Does Resource.duplicate() deep-copy nested arrays and resources by default?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "duplicate",
+            "shallow"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 29.5,
+          "top_doc_ids": [
+            "classes/class_array",
+            "classes/class_dictionary",
+            "classes/class_resource",
+            "classes/class_resource",
+            "classes/class_array",
+            "classes/class_dictionary",
+            "classes/class_resource",
+            "tutorials/migrating/upgrading_to_godot_4.5",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/resources"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q012",
+          "query": "What is resource_path for a resource that is embedded inside a scene file?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_resource"
+          ],
+          "gold_terms": [
+            "resource_path",
+            "PackedScene"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 55.08,
+          "top_doc_ids": [
+            "classes/class_resource",
+            "classes/class_editorexportplugin",
+            "tutorials/scripting/resources",
+            "classes/class_resource",
+            "classes/class_renderingserver",
+            "classes/class_resourcesaver",
+            "engine_details/file_formats/tscn",
+            "classes/class_resourcesaver",
+            "classes/class_editorexportplugin",
+            "tutorials/migrating/upgrading_to_godot_4"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q013",
+          "query": "What is the difference between PhysicsBody2D.move_and_collide() and CharacterBody2D.move_and_slide()?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_physicsbody2d",
+            "classes/class_characterbody2d"
+          ],
+          "gold_terms": [
+            "move_and_collide",
+            "KinematicCollision2D"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 58.16,
+          "top_doc_ids": [
+            "classes/class_characterbody2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "tutorials/physics/using_character_body_2d",
+            "classes/class_physicsbody2d",
+            "classes/class_characterbody3d",
+            "tutorials/physics/kinematic_character_2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q014",
+          "query": "Which signal tells me that a physics body entered an Area2D, and what must be enabled?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_area2d"
+          ],
+          "gold_terms": [
+            "body_entered",
+            "monitoring"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 56.06,
+          "top_doc_ids": [
+            "tutorials/physics/using_area_2d",
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_area2d",
+            "classes/class_physicsserver2d",
+            "classes/class_physicsserver3d",
+            "classes/class_area3d",
+            "tutorials/physics/physics_introduction",
+            "getting_started/first_2d_game/03.coding_the_player",
+            "classes/class_area2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q015",
+          "query": "When is Timer's timeout signal emitted and how do I make the timer start automatically?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_timer"
+          ],
+          "gold_terms": [
+            "timeout",
+            "autostart"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.5,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 2,
+          "latency_ms": 71.3,
+          "top_doc_ids": [
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_timer",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_scenetreetimer",
+            "classes/class_timer",
+            "getting_started/step_by_step/signals",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "getting_started/step_by_step/signals",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "classes/class_timer"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q016",
+          "query": "How do I switch to another scene file at runtime and how do I quit the game from code?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_scenetree"
+          ],
+          "gold_terms": [
+            "change_scene_to_file",
+            "quit"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.14285714285714285,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 7,
+          "latency_ms": 76.01,
+          "top_doc_ids": [
+            "tutorials/io/runtime_file_loading_and_saving",
+            "tutorials/scripting/groups",
+            "tutorials/io/runtime_file_loading_and_saving",
+            "tutorials/assets_pipeline/importing_3d_scenes/index",
+            "classes/class_fileaccess",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "classes/class_scenetree",
+            "tutorials/plugins/running_code_in_the_editor",
+            "getting_started/first_3d_game/08.score_and_replay",
+            "getting_started/first_3d_game/index"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q017",
+          "query": "My RayCast2D gives a stale result for one frame. How can I update it immediately?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_raycast2d"
+          ],
+          "gold_terms": [
+            "force_raycast_update",
+            "_physics_process"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 53.18,
+          "top_doc_ids": [
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_shapecast2d",
+            "tutorials/physics/ray-casting",
+            "classes/class_raycast3d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d",
+            "classes/class_raycast2d"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q018",
+          "query": "怎么判断输入动作是否被按住？怎么把两个动作（正/负方向）合成一个轴值？",
+          "lang": "zh",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_input"
+          ],
+          "gold_terms": [
+            "is_action_pressed",
+            "get_axis"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 4.38,
+          "top_doc_ids": [
+            "classes/class_input",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "classes/class_input",
+            "classes/class_inputevent",
+            "classes/class_inputeventaction",
+            "classes/class_inputmap",
+            "getting_started/first_3d_game/02.player_input",
+            "classes/class_inputevent",
+            "classes/class_inputmap",
+            "classes/class_inputmap"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q019",
+          "query": "How do I create a new instance of a scene (.tscn) at runtime and what does PackedScene.instantiate() return?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_packedscene"
+          ],
+          "gold_terms": [
+            "instantiate",
+            "PackedScene"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.1111111111111111,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 9,
+          "latency_ms": 63.85,
+          "top_doc_ids": [
+            "tutorials/scripting/nodes_and_scene_instances",
+            "tutorials/scripting/resources",
+            "tutorials/best_practices/scenes_versus_scripts",
+            "classes/class_scenestate",
+            "tutorials/scripting/change_scenes_manually",
+            "tutorials/best_practices/logic_preferences",
+            "tutorials/best_practices/scenes_versus_scripts",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "classes/class_packedscene",
+            "classes/class_packedscene"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q020",
+          "query": "How do I send an HTTP request with HTTPRequest and receive the response body?",
+          "lang": "en",
+          "doc_type": "class",
+          "gold_doc_ids": [
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class"
+          ],
+          "gold_terms": [
+            "request_completed",
+            "HTTPRequest"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 56.25,
+          "top_doc_ids": [
+            "tutorials/networking/http_request_class",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "tutorials/networking/http_request_class",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest",
+            "classes/class_httprequest"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q021",
+          "query": "2D 移动教程里，输入方向、速度和 velocity 是怎么组合的？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/2d_movement"
+          ],
+          "gold_terms": [
+            "input_direction",
+            "velocity"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.14285714285714285,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 7,
+          "latency_ms": 5.79,
+          "top_doc_ids": [
+            "getting_started/first_2d_game/03.coding_the_player",
+            "tutorials/physics/kinematic_character_2d",
+            "getting_started/first_3d_game/09.adding_animations",
+            "getting_started/first_3d_game/07.killing_player",
+            "tutorials/xr/xr_room_scale",
+            "getting_started/first_3d_game/03.player_movement_code",
+            "tutorials/2d/2d_movement",
+            "tutorials/inputs/controllers_gamepads_joysticks",
+            "getting_started/step_by_step/scripting_player_input",
+            "tutorials/physics/physics_introduction"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q022",
+          "query": "How do I set up a TileMap and what do I need before creating one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/2d/using_tilemaps"
+          ],
+          "gold_terms": [
+            "TileSet",
+            "TileMap"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 50.36,
+          "top_doc_ids": [
+            "tutorials/2d/using_tilesets",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "tutorials/2d/using_tilemaps",
+            "classes/class_tilemaplayer",
+            "classes/class_tilemap",
+            "classes/class_tilemap",
+            "classes/class_tilemap"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q023",
+          "query": "How do I rotate a 3D object using its transform basis?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/3d/using_transforms"
+          ],
+          "gold_terms": [
+            "transform.basis",
+            "global_transform"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 34.9,
+          "top_doc_ids": [
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/math/matrices_and_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/math/matrices_and_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/3d/using_transforms",
+            "tutorials/performance/using_multimesh"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q024",
+          "query": "GDScript 里怎么声明数组和字典？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_basics"
+          ],
+          "gold_terms": [
+            "Array",
+            "Dictionary"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": null,
+          "latency_ms": 10.01,
+          "top_doc_ids": [
+            "tutorials/plugins/running_code_in_the_editor",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "classes/class_dictionary",
+            "classes/class_@gdscript",
+            "classes/class_@gdscript",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/c_sharp/c_sharp_differences",
+            "tutorials/scripting/gdscript/static_typing",
+            "classes/class_@gdscript"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q025",
+          "query": "What are the benefits of static typing in GDScript and how do I annotate variables and functions?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "gold_terms": [
+            "static typing",
+            "type hint"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 74.81,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/scripting/gdscript/gdscript_basics",
+            "tutorials/scripting/gdscript/static_typing",
+            "about/docs_changelog",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing",
+            "tutorials/scripting/gdscript/static_typing"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q026",
+          "query": "How do I expose a variable so it can be edited in the Inspector?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/gdscript_exports"
+          ],
+          "gold_terms": [
+            "@export",
+            "property editor"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.125,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": 8,
+          "latency_ms": 80.84,
+          "top_doc_ids": [
+            "classes/class_editorinspector",
+            "getting_started/introduction/index",
+            "classes/class_visualshadernodeparameter",
+            "tutorials/scripting/c_sharp/diagnostics/GD0110",
+            "tutorials/scripting/resources",
+            "tutorials/scripting/c_sharp/c_sharp_style_guide",
+            "classes/class_editorinspector",
+            "tutorials/scripting/gdscript/gdscript_exports",
+            "tutorials/plugins/editor/making_plugins",
+            "getting_started/first_3d_game/05.spawning_mobs"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q027",
+          "query": "怎么在场景之间共享玩家分数这类全局数据？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/scripting/singletons_autoload"
+          ],
+          "gold_terms": [
+            "Autoload",
+            "singleton"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.1111111111111111,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 9,
+          "latency_ms": 37.97,
+          "top_doc_ids": [
+            "classes/class_configfile",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "tutorials/best_practices/autoloads_versus_regular_nodes",
+            "getting_started/first_3d_game/08.score_and_replay",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "getting_started/first_2d_game/05.the_main_game_scene",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "getting_started/first_3d_game/08.score_and_replay",
+            "tutorials/scripting/singletons_autoload",
+            "getting_started/first_2d_game/06.heads_up_display"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q028",
+          "query": "Should I handle gameplay input in _input or _unhandled_input?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/inputs/inputevent"
+          ],
+          "gold_terms": [
+            "_unhandled_input",
+            "_input"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": null,
+          "latency_ms": 26.14,
+          "top_doc_ids": [
+            "classes/class_node",
+            "classes/class_node",
+            "classes/class_node",
+            "tutorials/scripting/overridable_functions",
+            "tutorials/scripting/overridable_functions",
+            "classes/class_node",
+            "classes/class_inputeventshortcut",
+            "classes/class_inputeventmouse",
+            "classes/class_inputeventmouse",
+            "classes/class_control"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q029",
+          "query": "怎么让一个函数可以被其他网络对等端调用（RPC）？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/networking/high_level_multiplayer"
+          ],
+          "gold_terms": [
+            "@rpc",
+            "rpc()"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 2.77,
+          "top_doc_ids": [
+            "tutorials/networking/high_level_multiplayer",
+            "tutorials/networking/high_level_multiplayer",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_callable",
+            "classes/class_@gdscript",
+            "classes/class_callable",
+            "classes/class_@gdscript",
+            "tutorials/networking/high_level_multiplayer",
+            "classes/class_node",
+            "classes/class_node"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q030",
+          "query": "What is an export preset and how do I create one?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/export/exporting_projects"
+          ],
+          "gold_terms": [
+            "export preset",
+            "export template"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.3333333333333333,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 3,
+          "latency_ms": 41.01,
+          "top_doc_ids": [
+            "tutorials/export/one-click_deploy",
+            "getting_started/introduction/index",
+            "tutorials/export/exporting_projects",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportplatformextension",
+            "tutorials/export/changing_application_icon_for_windows",
+            "tutorials/editor/command_line_tutorial",
+            "classes/class_editorexportplatform",
+            "classes/class_editorexportplatformextension"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q031",
+          "query": "写 Godot 着色器时，第一行要怎么声明着色器类型？有哪些类型？",
+          "lang": "zh",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/shaders/introduction_to_shaders"
+          ],
+          "gold_terms": [
+            "shader_type",
+            "fragment()"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.25,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 4,
+          "latency_ms": 45.69,
+          "top_doc_ids": [
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/your_first_shader/your_first_3d_shader",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "tutorials/shaders/introduction_to_shaders",
+            "tutorials/shaders/introduction_to_shaders",
+            "tutorials/xr/ar_passthrough",
+            "tutorials/scripting/gdscript/gdscript_styleguide",
+            "tutorials/shaders/shader_reference/shading_language",
+            "tutorials/shaders/shader_reference/shader_preprocessor",
+            "tutorials/shaders/shader_reference/shading_language"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q032",
+          "query": "When should I use AnimationTree instead of calling AnimationPlayer directly?",
+          "lang": "en",
+          "doc_type": "tutorial",
+          "gold_doc_ids": [
+            "tutorials/animation/animation_tree"
+          ],
+          "gold_terms": [
+            "AnimationTree",
+            "AnimationPlayer"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 38.36,
+          "top_doc_ids": [
+            "tutorials/animation/animation_tree",
+            "classes/class_animationtree",
+            "classes/class_animationmixer",
+            "tutorials/best_practices/data_preferences",
+            "tutorials/animation/animation_tree",
+            "classes/class_animationtree",
+            "classes/class_animationplayer",
+            "classes/class_animationtree",
+            "classes/class_animationtree",
+            "tutorials/animation/animation_tree"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q033",
+          "query": "What is the relationship between nodes and scenes in a Godot project?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/nodes_and_scenes"
+          ],
+          "gold_terms": [
+            "nodes",
+            "scenes"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.2,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 5,
+          "latency_ms": 101.79,
+          "top_doc_ids": [
+            "tutorials/best_practices/scenes_versus_scripts",
+            "tutorials/best_practices/what_are_godot_classes",
+            "tutorials/export/exporting_projects",
+            "classes/class_tree",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "tutorials/assets_pipeline/importing_3d_scenes/index",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "getting_started/introduction/key_concepts_overview",
+            "tutorials/3d/particles/process_material_properties",
+            "getting_started/step_by_step/instancing"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q034",
+          "query": "怎么做才能把按钮的 pressed 信号连接到脚本函数上？",
+          "lang": "zh",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/signals"
+          ],
+          "gold_terms": [
+            "pressed",
+            "signal"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 7.66,
+          "top_doc_ids": [
+            "getting_started/step_by_step/signals",
+            "getting_started/step_by_step/signals",
+            "tutorials/scripting/c_sharp/c_sharp_signals",
+            "classes/class_signal",
+            "getting_started/first_2d_game/06.heads_up_display",
+            "classes/class_signal",
+            "getting_started/step_by_step/signals",
+            "classes/class_basebutton",
+            "classes/class_basebutton",
+            "tutorials/scripting/pausing_games"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q035",
+          "query": "How do I attach my first script and print a message when the scene runs?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/step_by_step/scripting_first_script"
+          ],
+          "gold_terms": [
+            "_init",
+            "print"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 1.0,
+          "mrr@10": 0.16666666666666666,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 6,
+          "latency_ms": 65.58,
+          "top_doc_ids": [
+            "classes/class_string",
+            "classes/class_editordebuggerplugin",
+            "tutorials/scripting/cross_language_scripting",
+            "tutorials/scripting/cross_language_scripting",
+            "tutorials/scripting/cross_language_scripting",
+            "getting_started/step_by_step/scripting_first_script",
+            "tutorials/plugins/running_code_in_the_editor",
+            "tutorials/scripting/cross_language_scripting",
+            "tutorials/best_practices/scenes_versus_scripts",
+            "tutorials/plugins/editor/making_plugins"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q036",
+          "query": "What are the four key concepts a beginner should learn first in Godot?",
+          "lang": "en",
+          "doc_type": "getting_started",
+          "gold_doc_ids": [
+            "getting_started/introduction/key_concepts_overview"
+          ],
+          "gold_terms": [
+            "four concepts",
+            "signals"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 85.05,
+          "top_doc_ids": [
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/learn_to_code_with_gdscript",
+            "getting_started/step_by_step/nodes_and_scenes",
+            "getting_started/introduction/introduction_to_godot",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/key_concepts_overview",
+            "getting_started/introduction/index",
+            "getting_started/first_2d_game/07.finishing-up",
+            "classes/class_inputeventkey",
+            "getting_started/first_2d_game/03.coding_the_player"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q037",
+          "query": "What 2D coordinate systems does Godot expose, and when do I work in item coordinates vs canvas coordinates?",
+          "lang": "en",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems"
+          ],
+          "gold_terms": [
+            "Item Coordinates",
+            "Canvas Coordinates"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 76.1,
+          "top_doc_ids": [
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "engine_details/architecture/2d_coordinate_systems",
+            "tutorials/2d/2d_transforms",
+            "engine_details/architecture/2d_coordinate_systems",
+            "tutorials/2d/2d_transforms",
+            "getting_started/introduction/index",
+            "tutorials/2d/2d_transforms",
+            "engine_details/architecture/2d_coordinate_systems",
+            "about/docs_changelog"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q038",
+          "query": "在 C++ 里自定义一个新的 Object 子类并注册到引擎要怎么写？",
+          "lang": "zh",
+          "doc_type": "engine_details",
+          "gold_doc_ids": [
+            "engine_details/architecture/object_class"
+          ],
+          "gold_terms": [
+            "GDCLASS",
+            "memnew"
+          ],
+          "recall@1": 0.0,
+          "recall@5": 0.0,
+          "recall@10": 0.0,
+          "mrr@10": 0.0,
+          "pagehit@5": 0.0,
+          "first_relevant_rank": null,
+          "latency_ms": 9.55,
+          "top_doc_ids": [
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "classes/class_engine",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "engine_details/engine_api/custom_modules_in_cpp",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/gdextension/gdextension_c_example",
+            "engine_details/engine_api/binding_to_external_libraries",
+            "engine_details/engine_api/gdextension/gdextension_c_example"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q039",
+          "query": "高速移动的物理物体穿过墙壁（tunneling）该怎么解决？",
+          "lang": "zh",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues"
+          ],
+          "gold_terms": [
+            "tunneling",
+            "Continuous CD"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 5.0,
+          "top_doc_ids": [
+            "tutorials/physics/troubleshooting_physics_issues",
+            "classes/class_renderingserver",
+            "tutorials/physics/physics_introduction",
+            "tutorials/physics/kinematic_character_2d",
+            "tutorials/physics/using_character_body_2d",
+            "getting_started/first_3d_game/04.mob_scene",
+            "classes/class_multimesh",
+            "tutorials/2d/2d_movement",
+            "getting_started/first_3d_game/03.player_movement_code",
+            "getting_started/first_3d_game/04.mob_scene"
+          ],
+          "error": null
+        },
+        {
+          "qid": "q040",
+          "query": "How do I make a GDScript warning, such as an unused variable, fail the build as an error?",
+          "lang": "en",
+          "doc_type": "troubleshooting",
+          "gold_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system"
+          ],
+          "gold_terms": [
+            "unused_variable",
+            "warning"
+          ],
+          "recall@1": 1.0,
+          "recall@5": 1.0,
+          "recall@10": 1.0,
+          "mrr@10": 1.0,
+          "pagehit@5": 1.0,
+          "first_relevant_rank": 1,
+          "latency_ms": 68.2,
+          "top_doc_ids": [
+            "tutorials/scripting/gdscript/warning_system",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "tutorials/scripting/debug/overview_of_debugging_tools",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_projectsettings",
+            "classes/class_@gdscript",
+            "tutorials/math/vector_math",
+            "classes/class_projectsettings"
+          ],
+          "error": null
+        }
+      ]
+    }
+  },
+  "qa_path": "C:\\Users\\Kiara\\Desktop\\GodotRag\\data\\processed\\qa.jsonl",
+  "index_dir": "C:\\Users\\Kiara\\Desktop\\GodotRag\\data\\index",
+  "elapsed_seconds": 10.89
+}
