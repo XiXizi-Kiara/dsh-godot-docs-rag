@@ -287,9 +287,20 @@ ZH_TERMS: dict[str, tuple[str, ...]] = {
 _SORTED = sorted(ZH_TERMS.items(), key=lambda kv: len(kv[0]), reverse=True)
 
 
+def _jieba_words(query: str) -> list[str]:
+    """用 jieba 切出中文词（懒加载；jieba 不可用时返回空）。"""
+    try:
+        import jieba
+
+        return [w for w in jieba.cut(query) if w.strip()]
+    except Exception:
+        return []
+
+
 def translate_query(query: str) -> tuple[str, list[tuple[str, str]]]:
     """返回 (增强后的查询, [(中文词, 英文词), ...])。
 
+    两级匹配：最长匹配覆盖复合词（"节点路径"），jieba 词级匹配补充独立词。
     增强查询 = 命中的英文关键词 + 原 query；未命中时原样返回。
     """
     if not query:
@@ -307,6 +318,14 @@ def translate_query(query: str) -> tuple[str, list[tuple[str, str]]]:
             used_spans.append(span)
             hits.append((zh, ens[0]))
             start = query.find(zh, start + 1)
+
+    # jieba 词级补充：覆盖最长匹配没吃到的独立中文词
+    seen = {zh for zh, _ in hits}
+    for word in _jieba_words(query):
+        if word in ZH_TERMS and word not in seen:
+            seen.add(word)
+            hits.append((word, ZH_TERMS[word][0]))
+
     if not hits:
         return query, []
     terms: list[str] = []

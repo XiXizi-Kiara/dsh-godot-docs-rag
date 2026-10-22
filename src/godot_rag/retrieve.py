@@ -5,6 +5,8 @@ import sys
 import time
 from pathlib import Path
 
+import numpy as np
+
 from . import config
 from . import index as index_mod
 from .bm25 import BM25Index
@@ -30,11 +32,11 @@ class GodotRAG:
 
     def __init__(self, index_dir: str | Path | None = None, device: str | None = None) -> None:
         self.index_dir = Path(index_dir or config.INDEX_DIR)
-        # auto / cpu / cuda；查询编码走本进程 CPU，device 仅影响重排模型
+        # auto / cpu / cuda：查询编码与重排都使用该设备（CUDA 可用时自动 GPU）
         self.device = (device or config.DEVICE or "auto").lower()
         self._meta: dict | None = None
         self._chunks: list[dict] | None = None
-        self._embeddings = None
+        self._faiss = None
         self._bm25: BM25Index | None = None
         self._docs: dict | None = None
         self._encoder: Encoder | None = None
@@ -56,7 +58,7 @@ class GodotRAG:
         t0 = time.time()
         self._meta = index_mod.load_meta(self.index_dir)
         self._chunks = index_mod.load_chunks(self.index_dir)
-        self._embeddings = index_mod.load_embeddings(self.index_dir)
+        self._faiss = index_mod.load_faiss(self.index_dir)
         self._bm25 = index_mod.load_bm25(self.index_dir)
         self._docs = index_mod.load_docs(self.index_dir)
         self._loaded = True
@@ -91,6 +93,7 @@ class GodotRAG:
                     "build_seconds": meta.get("build_seconds"),
                     "limit": meta.get("limit"),
                     "device": meta.get("device"),
+                    "index_backend": meta.get("index_backend"),
                 }
             )
         return info
@@ -117,17 +120,13 @@ class GodotRAG:
         bm25_ranked: list[tuple[int, float]] = []
         if "dense" in mode or mode == "hybrid" or "rerank" in mode:
             if self._encoder is None:
-                self._encoder = Encoder(device="cpu")  # 单条查询用 CPU，避免子进程开销
-            qvec = self._encoder.encode_query(dense_query)
-            scores = self._embeddings @ qvec
-            # argpartition 取 topK，再按分数排序
-            top = min(config.DENSE_TOP_K, len(scores))
-            idx = scores.argpartition(-top)[-top:]
-            dense_ranked = sorted(
-                ((int(i), float(scores[i])) for i in idx),
-                key=lambda x: x[1],
-                reverse=True,
-            )
+                self._encoder = Encoder(device=self.device)
+            qvec = self._encoder.encode_query(dense_query).reshape(1, -1).astype(np.float32)
+            top = min(config.DENSE_TOP_K, self._faiss.ntotal)
+            dist, ids = self._faiss.search(qvec, top)
+            dense_ranked = [
+                (int(i), float(d)) for i, d in zip(ids[0], dist[0]) if i >= 0
+            ]
         if "bm25" in mode or mode == "hybrid" or "rerank" in mode:
             bm25_ranked = self._bm25.search(bm25_query, config.BM25_TOP_K)
 
@@ -140,11 +139,12 @@ class GodotRAG:
         else:
             rrf: dict[int, float] = {}
             rrf_k = config.RRF_K
+            dw, bw = config.DENSE_WEIGHT, config.BM25_WEIGHT
             for rank, (i, s) in enumerate(dense_ranked):
-                rrf[i] = rrf.get(i, 0.0) + 1.0 / (rrf_k + rank + 1)
+                rrf[i] = rrf.get(i, 0.0) + dw / (rrf_k + rank + 1)
                 detail.setdefault(i, {})["dense"] = s
             for rank, (i, s) in enumerate(bm25_ranked):
-                rrf[i] = rrf.get(i, 0.0) + 1.0 / (rrf_k + rank + 1)
+                rrf[i] = rrf.get(i, 0.0) + bw / (rrf_k + rank + 1)
                 detail.setdefault(i, {})["bm25"] = s
             fused = [
                 (i, sc, {"dense": detail.get(i, {}).get("dense"),

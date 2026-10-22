@@ -11,10 +11,10 @@ godot-docs-html-stable/_sources/   # 输入：1597 个 RST 源
 data/processed/documents.jsonl     # parse_rst 输出，一行一个 Document
 data/processed/chunks.jsonl        # chunk 输出，一行一个 Chunk
 data/processed/qa.jsonl            # eval 的 40 条问答
-data/index/meta.json               # 索引元信息
-data/index/embeddings.npy          # float32 (N, 384) 归一化向量
-data/index/chunks.pkl              # list[dict] Chunk（与 embeddings 行对齐）
-data/index/bm25.pkl                # BM25 倒排（pickle）
+data/index/meta.json               # 索引元信息（含 device / index_backend / libs 版本）
+data/index/faiss.index             # faiss IndexFlatIP（N×384，向量已归一化）
+data/index/chunks.pkl              # list[dict] Chunk（行号与 faiss 向量对齐）
+data/index/bm25.pkl                # rank_bm25.BM25Okapi（pickle）
 data/index/docs.pkl                # dict[doc_id] -> Document
 data/reports/eval.md               # 评测报告
 models/bge-small-en-v1.5/          # embedding 模型
@@ -26,6 +26,8 @@ models/bge-reranker-base/          # reranker（可选）
 ```python
 @dataclass
 class Block:      kind: str; text: str; lang: str | None = None
+                  ref_kind: str | None = None   # class 页符号类别：method/property/signal/constant/enum
+                  symbol: str | None = None     # class 页符号名，如 "add_child"
 @dataclass
 class Section:    title: str; level: int; blocks: list[Block]; anchor: str = ""
 @dataclass
@@ -50,7 +52,8 @@ class Document:   doc_id: str; doc_type: str; title: str; breadcrumbs: list[str]
 
 ```python
 {"rank": int, "score": float, "chunk_id": str, "doc_id": str, "doc_type": str,
- "title": str, "breadcrumbs": list[str], "url": str, "symbol": str, "text": str,
+ "title": str, "breadcrumbs": list[str], "url": str, "anchor": str,
+ "symbol": str, "text": str, "raw_text": str,
  "score_detail": dict}   # {"dense": float|None, "bm25": float|None, "rerank": float|None}
 ```
 
@@ -67,10 +70,10 @@ class Document:   doc_id: str; doc_type: str; title: str; breadcrumbs: list[str]
 ```python
 from godot_rag import GodotRAG
 
-rag = GodotRAG(index_dir: str | Path = "data/index")   # mmap 懒加载
+rag = GodotRAG(index_dir: str | Path = "data/index", device: str | None = None)  # device=auto/cpu/cuda
 rag.search(query: str, k: int = 8, mode: str = "hybrid") -> list[dict]   # SearchResult dict
 rag.ask(query: str, k: int = 8, mode: str = "hybrid", lang: str | None = None) -> dict  # AskResult
-rag.stats() -> dict      # {"n_chunks", "n_docs", "modes", "models", "dim", ...}
+rag.stats() -> dict      # {"n_chunks", "n_docs", "modes", "models", "dim", "device", "index_backend", ...}
 rag.ready: bool          # 索引是否存在
 ```
 
@@ -79,29 +82,35 @@ rag.ready: bool          # 索引是否存在
 ## 4. 构建（`build.py`）
 
 ```python
-build_index(limit: int | None = None, force: bool = False, rerank: bool = True) -> dict  # 返回统计
+build_index(limit: int | None = None, force: bool = False,
+            index_dir: str | Path | None = None, device: str | None = None) -> dict
 ```
 
-CLI `python -m godot_rag build` 调用它。构建步骤：parse → chunk → embed → bm25 → 落盘。
+CLI `python -m godot_rag build` 调用它。构建步骤：parse → chunk → embed（sentence-transformers）
+→ BM25（rank_bm25）→ 写 faiss.index / bm25.pkl / chunks.pkl / docs.pkl / meta.json。
 `--limit N` 只处理前 N 篇文档（试跑用，写入 `data/index_smoke/` 以免污染全量索引）。
+`device` 透传给 Encoder（auto/cpu/cuda），实际设备写入 meta。
 
 ## 5. CLI（`cli.py`）
 
 ```
 python -m godot_rag build  [--limit N] [--force]
-python -m godot_rag search QUERY [--k 8] [--mode hybrid] [--json]
-python -m godot_rag ask    QUERY [--k 8] [--mode hybrid] [--json]
-python -m godot_rag serve  [--host 127.0.0.1] [--port 8765]
-python -m godot_rag stats  [--json]
+python -m godot_rag search QUERY [--k 8] [--mode hybrid] [--json] [--index-dir DIR]
+python -m godot_rag ask    QUERY [--k 8] [--mode hybrid] [--json] [--index-dir DIR]
+python -m godot_rag serve  [--host 127.0.0.1] [--port 8765] [--backend fastapi|stdlib]
+python -m godot_rag stats  [--json] [--index-dir DIR]
 python -m godot_rag eval   [--configs hybrid,hybrid+rerank] [--json]
 ```
 
 - 所有命令支持 `--json`，stdout 只输出 JSON（日志走 stderr），便于 agent 解析。
 - 无索引时给出明确错误：`索引不存在，请先运行 python -m godot_rag build`，exit code 2。
 
-## 6. HTTP 服务（`service.py`）
+## 6. HTTP 服务（`service_fastapi.py` 默认 / `service.py` 备选）
 
-标准库 `ThreadingHTTPServer`，零依赖。端点：
+- **默认后端**：`service_fastapi.py`（FastAPI + uvicorn），复用 `service.App` 的业务逻辑与
+  单页 UI，端点/错误码与标准库实现一致。
+- **备选后端**：`service.py`（标准库 `ThreadingHTTPServer`，零第三方依赖），
+  `serve --backend stdlib` 启动。
 
 ```
 GET  /                 单页 UI（内联 HTML/CSS/JS，中文界面）
@@ -109,20 +118,22 @@ GET  /api/health       -> {"ok": true, "ready": bool, "n_chunks": int}
 GET  /api/stats        -> rag.stats()
 POST /api/search       body {"query": str, "k": int, "mode": str} -> {"results": [SearchResult]}
 POST /api/ask          body {"query": str, "k": int, "mode": str, "lang": str|null} -> AskResult
-GET  /api/doc?doc_id=  -> {"doc_id", "title", "url", "html_text", "breadcrumbs"}  # 整页原文（用 Document.sections 拼纯文本/简单 HTML）
+GET  /api/doc?doc_id=  -> {"doc_id", "title", "url", "html_text", "breadcrumbs"}
 ```
 
-校验：query 非空且 ≤ 500 字符，k ∈ [1, 20]，mode 合法，否则 400。
+校验：query 非空且 ≤ 500 字符，k ∈ [1, 20]，mode 合法，否则 400；未就绪 503。
 绑定 127.0.0.1，非法 JSON 返回 400。`serve` 打印实际 URL。
 
 ## 7. 生成（`generate.py`）
 
 ```python
-def answer(query: str, passages: list[dict], lang: str | None = None) -> dict
+def answer(query: str, passages: list[dict], lang: str | None = None, *,
+           api_key: str | None = None, client=None, timeout: float = 60.0) -> dict
 # 返回 {"answer": str, "llm_used": bool}
-# 无 LLM key（环境变量 GODOT_RAG_LLM_API_KEY）时：检索式回答，取首片段首句摘要 + 说明
-# 有 key：OpenAI 兼容 chat/completions，base_url 默认 https://api.deepseek.com/v1，
-#         model 默认 deepseek-chat；必须只依据 passages，答案内用 [n] 标注引用。
+# 无 LLM key（GODOT_RAG_LLM_API_KEY）时：检索式回答，取首片段首句摘要 + 说明
+# 有 key：openai SDK 调 OpenAI 兼容 /chat/completions（默认 DeepSeek），
+#         只依据 passages，答案内用 [n] 标注引用；失败静默降级。
+# prompt 片段预算用 tiktoken 精确计数（BPE 文件缺失时自动回退字符估算）。
 ```
 
 ## 8. 评测（`eval.py`）
@@ -138,7 +149,7 @@ def answer(query: str, passages: list[dict], lang: str | None = None) -> dict
 ```python
 translate_query(query: str) -> tuple[str, list[tuple[str, str]]]
 # 返回 (增强后的查询, [(中文词, 英文词), ...])
-# 词典 ≥ 100 条 Godot 领域术语，最长匹配优先；无命中返回 (原 query, [])
+# 词典 268 条 Godot 领域术语；最长匹配 + jieba 词级补充；无命中返回 (原 query, [])
 ```
 
 ## 10. 测试与验收
@@ -147,6 +158,8 @@ translate_query(query: str) -> tuple[str, list[tuple[str, str]]]
   `C:\Users\Kiara\.conda\envs\godotrag\python.exe`
 - 测试命令：`& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" scripts\run_tests.py -v`
   （或 `$env:PYTHONPATH="src"; ...python.exe -m unittest discover -s tests`）
-- 必须全绿（不依赖 GPU / 不依赖全量索引）。
-- Lead 验收：全量 build 成功、`search`/`ask`/`serve` 冒烟、eval 达到 Recall@5 ≥ 0.85、PageHit@5 ≥ 0.95。
-- 任何模块不得新增 pip 依赖；标准库 + numpy/torch/transformers 之外一律不用。
+- 必须全绿（不依赖 GPU / 不依赖全量索引）——当前 **116 个 unittest**。
+- Lead 验收：全量 build 成功、`search`/`ask`/`serve` 冒烟、eval 达到 Recall@5 ≥ 0.85、PageHit@5 ≥ 0.95（当前 hybrid 0.875 / 0.975）。
+- 运行依赖见 [docs/ENV.md](ENV.md) 与 [requirements.txt](../requirements.txt)：torch(cu128)、
+  sentence-transformers、faiss-cpu、rank_bm25、jieba、fastapi、uvicorn、openai、tiktoken 等。
+  新增依赖必须同步写入 requirements.txt 并保证测试可离线运行。

@@ -65,6 +65,9 @@ def build_index(
     bm25 = BM25Index.build(texts)
 
     # 5. 元信息与落盘
+    import faiss
+    import sentence_transformers
+
     meta = {
         "embed_model": config.EMBED_MODEL_NAME,
         "dim": int(embeddings.shape[1]) if len(embeddings) else config.EMBED_DIM,
@@ -72,7 +75,14 @@ def build_index(
         if (config.RERANK_MODEL_DIR / "config.json").exists()
         else None,
         "device": encoder.device,
-        "backend": encoder.backend,
+        "embed_backend": "sentence-transformers",
+        "bm25_backend": "rank_bm25.BM25Okapi",
+        "libs": {
+            "sentence_transformers": sentence_transformers.__version__,
+            "faiss": faiss.__version__,
+            "torch": __import__("torch").__version__,
+            "transformers": __import__("transformers").__version__,
+        },
         "limit": limit,
         "build_seconds": round(time.time() - t0, 1),
     }

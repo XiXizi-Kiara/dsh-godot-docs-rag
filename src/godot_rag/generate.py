@@ -1,7 +1,7 @@
-"""答案生成层：无 LLM 时走检索式回答，有 LLM 时调用 OpenAI 兼容接口。
+"""答案生成层：无 LLM 时走检索式回答，有 LLM 时用 openai SDK 调 OpenAI 兼容接口。
 
-本模块只依赖标准库，输入是检索层返回的 passage 列表（SearchResult dict），
-不 import 项目内其他模块，因此可以完全用 fake 数据单测。
+输入是检索层返回的 passage 列表（SearchResult dict），不 import 项目内其他模块，
+因此可以完全用 fake 数据单测。
 
 约定（见 docs/INTERFACES.md §7）：
 
@@ -9,15 +9,14 @@
 
 - 没有环境变量 ``GODOT_RAG_LLM_API_KEY``：检索式回答，明确标注“检索式回答”，
   内容全部来自片段，不编造。
-- 有 key：POST ``{base_url}/chat/completions``（默认 DeepSeek），失败时静默降级
-  为检索式回答，HTTP 错误细节不泄漏给用户。
+- 有 key：用 openai SDK 调 ``{base_url}/chat/completions``（默认 DeepSeek），失败时
+  静默降级为检索式回答，HTTP 错误细节不泄漏给用户。
+- prompt 预算用 tiktoken 精确计数；tiktoken 的 BPE 数据文件不可用时自动回退字符估算。
 """
 from __future__ import annotations
 
-import json
 import os
 import re
-import urllib.request
 
 # ---- 配置（均可用环境变量覆盖） ----
 API_KEY_ENV = "GODOT_RAG_LLM_API_KEY"
@@ -29,7 +28,7 @@ DEFAULT_MODEL = "deepseek-chat"
 DEFAULT_TIMEOUT = 60.0
 
 MAX_PASSAGE_CHARS = 900  # 单个片段送入 LLM 的最大字符数
-MAX_PROMPT_CHARS = 12000  # 片段总字符预算
+MAX_PROMPT_TOKENS = 3000  # 片段总 token 预算（tiktoken 精确计数，不可用时按字符估算）
 MAX_BULLETS = 5
 MIN_BULLETS = 3
 
@@ -40,8 +39,34 @@ DEGRADED_NOTE = "（生成模型调用失败，已自动降级为检索式回答
 # 避免把 Node.add_child() / 4.3 之类的符号切断。
 _SENTENCE_END = re.compile(r"[。！？!?]|\.(?=\s|$)")
 
-# 测试可替换为假的 urlopen（签名与 urllib.request.urlopen 一致）
-_urlopen = urllib.request.urlopen
+# tiktoken 编码器（懒加载；BPE 数据文件缺失时回退字符估算）
+_TIKTOKEN_ENCODER = None
+_TIKTOKEN_FAILED = False
+
+
+def _get_encoder():
+    global _TIKTOKEN_ENCODER, _TIKTOKEN_FAILED
+    if _TIKTOKEN_ENCODER is not None or _TIKTOKEN_FAILED:
+        return _TIKTOKEN_ENCODER
+    try:
+        import tiktoken
+
+        _TIKTOKEN_ENCODER = tiktoken.get_encoding("cl100k_base")
+    except Exception:
+        _TIKTOKEN_FAILED = True
+        _TIKTOKEN_ENCODER = None
+    return _TIKTOKEN_ENCODER
+
+
+def _count_tokens(text: str) -> int:
+    """优先用 tiktoken 精确计数，不可用时按 4 字符 ≈ 1 token 估算。"""
+    enc = _get_encoder()
+    if enc is not None:
+        try:
+            return len(enc.encode(text))
+        except Exception:
+            pass
+    return max(1, len(text) // 4)
 
 
 # ---------------------------------------------------------------------------
@@ -83,9 +108,9 @@ def _title_of(passage) -> str:
 
 
 def _passage_lines(passages: list) -> str:
-    """把片段拼成带 [n] 编号的 prompt 上下文，按总字符预算截断。"""
+    """把片段拼成带 [n] 编号的 prompt 上下文，按 token 预算截断。"""
     lines: list[str] = []
-    budget = MAX_PROMPT_CHARS
+    budget = MAX_PROMPT_TOKENS
     for index, passage in enumerate(passages, start=1):
         text = _clean(_field(passage, "text") or _field(passage, "raw_text"))
         if not text:
@@ -95,10 +120,11 @@ def _passage_lines(passages: list) -> str:
             f"[{index}] 标题：{_title_of(passage)}"
             f"（URL: {_clean(_field(passage, 'url')) or '无'}）\n{text}\n"
         )
-        if len(block) > budget:
+        cost = _count_tokens(block)
+        if cost > budget:
             break
         lines.append(block)
-        budget -= len(block)
+        budget -= cost
     return "\n".join(lines)
 
 
@@ -200,35 +226,28 @@ def _call_llm(
     lang: str | None,
     *,
     api_key: str,
-    opener=None,
+    client=None,
     timeout: float = DEFAULT_TIMEOUT,
 ) -> str:
-    """调用 OpenAI 兼容的 /chat/completions，返回纯文本回答；失败抛异常。"""
+    """用 openai SDK 调 OpenAI 兼容 /chat/completions，返回纯文本回答；失败抛异常。"""
     base, model = _llm_config()
-    payload = {
-        "model": model,
-        "messages": _build_messages(query, passages, lang),
-        "temperature": 0.1,
-        "max_tokens": 1024,
-        "stream": False,
-    }
-    request = urllib.request.Request(
-        base + "/chat/completions",
-        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
-        headers={
-            "Content-Type": "application/json",
-            "Accept": "application/json",
-            "Authorization": f"Bearer {api_key}",
-        },
-        method="POST",
+    if client is None:
+        from openai import OpenAI
+
+        client = OpenAI(
+            api_key=api_key,
+            base_url=base,
+            timeout=timeout,
+            max_retries=1,
+        )
+    response = client.chat.completions.create(
+        model=model,
+        messages=_build_messages(query, passages, lang),
+        temperature=0.1,
+        max_tokens=1024,
+        stream=False,
     )
-    open_func = opener or _urlopen
-    with open_func(request, timeout=timeout) as response:
-        raw = response.read()
-    if isinstance(raw, str):
-        raw = raw.encode("utf-8")
-    data = json.loads(raw.decode("utf-8"))
-    content = data["choices"][0]["message"]["content"]
+    content = response.choices[0].message.content
     return str(content or "").strip()
 
 
@@ -241,7 +260,7 @@ def answer(
     lang: str | None = None,
     *,
     api_key: str | None = None,
-    opener=None,
+    client=None,
     timeout: float = DEFAULT_TIMEOUT,
 ) -> dict:
     """生成答案，始终返回 ``{"answer": str, "llm_used": bool}``。
@@ -251,8 +270,8 @@ def answer(
         passages: SearchResult dict 列表（也兼容对象）。
         lang: ``"zh"`` / ``"en"``；省略时按提问自动判断。
         api_key: 显式注入的 key（测试用），省略时读环境变量。
-        opener: 可注入的 urlopen 假实现（测试用）。
-        timeout: HTTP 超时秒数。
+        client: 可注入的 openai 兼容客户端（测试用），省略时按环境变量创建。
+        timeout: LLM 请求超时秒数。
     """
     passages = list(passages or [])
     key = api_key if api_key is not None else os.environ.get(API_KEY_ENV, "")
@@ -263,7 +282,7 @@ def answer(
 
     try:
         content = _call_llm(
-            query, passages, lang, api_key=key, opener=opener, timeout=timeout
+            query, passages, lang, api_key=key, client=client, timeout=timeout
         )
     except Exception:
         # 网络 / HTTP / 解析错误一律降级，不把错误细节泄漏给用户。

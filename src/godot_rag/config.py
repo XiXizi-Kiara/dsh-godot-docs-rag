@@ -42,7 +42,10 @@ CHUNK_OVERLAP_TOKENS = 40
 DENSE_TOP_K = 100
 BM25_TOP_K = 100
 RRF_K = 60
-RERANK_TOP_K = 50
+# RRF 两路权重：dense 语义更强，BM25 作为精确符号召回的补充
+DENSE_WEIGHT = 1.0
+BM25_WEIGHT = 0.3
+RERANK_TOP_K = 100
 DEFAULT_TOP_K = 8
 MAX_TOP_K = 20
 
@@ -50,31 +53,8 @@ MAX_TOP_K = 20
 QUERY_INSTRUCTION = "Represent this sentence for searching relevant passages: "
 
 # 计算设备：auto / cpu / cuda。
-# auto：本进程有 CUDA 就用 GPU；否则若找到可用的 GPU Python 解释器，则把批量嵌入
-#       委托给该解释器（外部 GPU 后端）；再否则用 CPU。
+# auto：本进程 torch 有 CUDA 就用 GPU（godotrag 环境已装 torch cu128），否则 CPU。
 DEVICE = os.environ.get("GODOT_RAG_DEVICE", "auto")
-
-# 外部 GPU 后端解释器（需装有 CUDA 版 torch）。可用环境变量显式指定，
-# 否则自动探测常见的 conda 环境。
-GPU_PYTHON = os.environ.get("GODOT_RAG_GPU_PYTHON") or None
-
-
-def _detect_gpu_python() -> Path | None:
-    if GPU_PYTHON:
-        p = Path(GPU_PYTHON)
-        return p if p.exists() else None
-    candidates = [
-        Path.home() / ".conda" / "envs" / "pytorch" / "python.exe",
-        Path("D:/Anaconda3/envs/pytorch/python.exe"),
-        Path.home() / "miniconda3" / "envs" / "pytorch" / "python.exe",
-    ]
-    for p in candidates:
-        if p.exists():
-            return p
-    return None
-
-
-GPU_PYTHON_PATH = _detect_gpu_python()
 
 
 def ensure_dirs() -> None:

@@ -5,9 +5,10 @@
 
 ## 0. 环境与入口
 
-项目统一使用 conda `godotrag` 环境（Python 3.12 + CPU torch），**不要**使用其他
-Python 解释器，也不需要 `pip install` 任何包（全程只用标准库 + 已装库）。
-CUDA 可用时会自动走 GPU 后端（见 `docs/ENV.md` 的"CPU / GPU 双支持"）。
+项目统一使用 conda `godotrag` 环境（Python 3.12 + CUDA torch），**不要**使用其他
+Python 解释器。依赖已安装完毕（见 [docs/ENV.md](ENV.md) 与 [requirements.txt](../requirements.txt)）：
+sentence-transformers / faiss-cpu / rank_bm25 / jieba / fastapi / uvicorn / openai / tiktoken。
+CUDA 可用时自动走 GPU（RTX 4060 实测嵌入约 250–500 条/秒、精排 100 条约 1 秒）。
 
 在项目根目录执行：
 
@@ -49,7 +50,7 @@ $env:PYTHONPATH = "src"
 python -m godot_rag build  [--limit N] [--force] [--json]
 python -m godot_rag search QUERY [--k 8] [--mode hybrid] [--json] [--index-dir DIR]
 python -m godot_rag ask    QUERY [--k 8] [--mode hybrid] [--json] [--index-dir DIR]
-python -m godot_rag serve  [--host 127.0.0.1] [--port 8765] [--index-dir DIR]
+python -m godot_rag serve  [--host 127.0.0.1] [--port 8765] [--backend fastapi|stdlib] [--index-dir DIR]
 python -m godot_rag stats  [--json] [--index-dir DIR]
 python -m godot_rag eval   [--configs hybrid,hybrid+rerank] [--json]
 ```
@@ -96,7 +97,7 @@ python -m godot_rag eval   [--configs hybrid,hybrid+rerank] [--json]
 - **未配置 LLM**（无 `GODOT_RAG_LLM_API_KEY`）：检索式回答。取首个片段的首句作摘要，
   并列出 3–5 条来自不同片段的要点（带 `[n]` 与文档标题），明确标注
   “检索式回答…未使用生成模型”，所有内容均摘自片段，不编造。
-- **配置了 LLM**：调用 OpenAI 兼容的 `/chat/completions`。默认
+- **配置了 LLM**：通过 openai SDK 调 OpenAI 兼容的 `/chat/completions`。默认
   `base_url=https://api.deepseek.com/v1`、`model=deepseek-chat`，
   可用环境变量覆盖：
 
@@ -106,15 +107,17 @@ python -m godot_rag eval   [--configs hybrid,hybrid+rerank] [--json]
   $env:GODOT_RAG_LLM_MODEL = "deepseek-chat"                    # 可选
   ```
 
-  Prompt 强制“只依据片段、逐条 `[n]` 引用、不知道就明说、中文提问中文回答”。
+  Prompt 强制“只依据片段、逐条 `[n]` 引用、不知道就明说、中文提问中文回答”；
+  片段预算用 tiktoken 精确计数（BPE 数据文件缺失时自动回退字符估算）。
   网络/HTTP/解析失败（含超时 60s）会**自动降级**为检索式回答并在答案开头说明，
   HTTP 错误细节不会泄漏给用户。若需离线或没有 key，不设置该变量即可。
 
 ### 2.3 serve
 
 ```powershell
-... scripts\run.py serve --port 8765
-# 启动后打印：Godot RAG 文档检索服务已启动：http://127.0.0.1:8765/
+... scripts\run.py serve --port 8765                 # 默认 FastAPI（uvicorn）
+... scripts\run.py serve --port 8765 --backend stdlib # 标准库实现，零第三方依赖
+# 启动后打印：Godot RAG（FastAPI）已启动：http://127.0.0.1:8765/
 ```
 
 Ctrl+C 优雅退出。索引尚未构建时服务仍可启动，UI 会提示先运行 `build`。

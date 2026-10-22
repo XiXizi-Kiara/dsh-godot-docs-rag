@@ -306,8 +306,12 @@ def _cmd_stats(args) -> int:
 
 
 def _cmd_serve(args) -> int:
+    backend = getattr(args, "backend", "fastapi")
     try:
-        from godot_rag import service
+        if backend == "fastapi":
+            from godot_rag import service_fastapi as service
+        else:
+            from godot_rag import service
     except ImportError as exc:
         return _fail(f"服务模块尚未就绪：{exc}", 2, False)
     try:
@@ -376,6 +380,12 @@ def build_parser() -> argparse.ArgumentParser:
     serve.add_argument("--host", default="127.0.0.1", help="监听地址（默认 127.0.0.1）")
     serve.add_argument("--port", type=int, default=8765, help="监听端口（默认 8765）")
     serve.add_argument("--index-dir", default=DEFAULT_INDEX_DIR, help="索引目录（默认 data/index）")
+    serve.add_argument(
+        "--backend",
+        choices=("fastapi", "stdlib"),
+        default="fastapi",
+        help="HTTP 后端：fastapi（默认）或 stdlib（零依赖标准库实现）",
+    )
     serve.set_defaults(handler=_cmd_serve)
 
     stats = subparsers.add_parser("stats", help="查看索引统计")

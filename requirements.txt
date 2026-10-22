@@ -1,0 +1,34 @@
+# Godot RAG 依赖清单（conda env: godotrag，Python 3.12）
+#
+# 安装顺序说明：
+# 1) CUDA 版 torch 必须从 PyTorch 官方 index 安装（PyPI 上的 Windows torch 是 CPU 版）：
+#      pip install --index-url https://download.pytorch.org/whl/cu128 "torch==2.11.0+cu128"
+# 2) 其余包走默认 PyPI 镜像：
+#      pip install -r requirements.txt
+#
+# 若使用 CPU-only 机器：把 torch 换成 CPU 版即可
+#      pip install "torch==2.11.0"（或对应版本）
+
+# ---- 核心模型 / 索引 ----
+torch==2.11.0+cu128        # CUDA 12.8，Windows wheel（见上面第 1 步）
+transformers==5.20.2
+sentence-transformers==6.2.0
+faiss-cpu==1.15.1
+rank_bm25==0.2.2
+jieba==0.42.1
+
+# ---- 服务 / 生成 ----
+fastapi==0.159.1
+uvicorn[standard]==0.47.0
+openai==3.36.1
+tiktoken==0.14.0           # 注意：BPE 数据文件需联网下载一次（见 docs/ENV.md）
+
+# ---- 文档解析辅助（当前按 RST 解析，此两项为备用能力）----
+lxml==6.1.3
+beautifulsoup4==4.15.0
+
+# ---- 测试 ----
+httpx==0.28.1              # FastAPI TestClient 依赖
+
+# ---- 基础 ----
+numpy==2.5.4

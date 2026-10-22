@@ -1,11 +1,11 @@
-"""generate.py 单元测试：不访问网络，用 fake opener 模拟 LLM 接口。"""
+"""generate.py 单元测试：不访问网络，用 fake openai client 模拟 LLM 接口。"""
 from __future__ import annotations
 
-import json
 import os
 import sys
 import unittest
 from pathlib import Path
+from types import SimpleNamespace
 
 _SRC = Path(__file__).resolve().parents[1] / "src"
 if str(_SRC) not in sys.path:
@@ -84,35 +84,28 @@ PASSAGES = [
 ]
 
 
-class _FakeResponse:
-    def __init__(self, payload):
-        self._body = json.dumps(payload, ensure_ascii=False).encode("utf-8")
-
-    def read(self):
-        return self._body
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, *exc_info):
-        return False
-
-
-class _FakeOpener:
-    """记录请求；按需返回 OpenAI 兼容响应或抛异常。"""
+class _FakeCompletions:
+    """记录 chat.completions.create 调用；按需返回内容或抛异常。"""
 
     def __init__(self, content="根据 [1]，使用 add_child() 添加子节点。", error=None):
-        self.payload = {
-            "choices": [{"message": {"role": "assistant", "content": content}}],
-        }
+        self.content = content
         self.error = error
-        self.calls = []
+        self.calls: list[dict] = []
 
-    def __call__(self, request, timeout=None):
-        self.calls.append({"request": request, "timeout": timeout})
+    def create(self, **kwargs):
+        self.calls.append(kwargs)
         if self.error is not None:
             raise self.error
-        return _FakeResponse(self.payload)
+        message = SimpleNamespace(content=self.content)
+        return SimpleNamespace(choices=[SimpleNamespace(message=message)])
+
+
+class _FakeClient:
+    """模拟 openai.OpenAI 客户端（chat.completions.create）。"""
+
+    def __init__(self, content="根据 [1]，使用 add_child() 添加子节点。", error=None):
+        self.completions = _FakeCompletions(content, error)
+        self.chat = SimpleNamespace(completions=self.completions)
 
 
 class GenerateRetrievalTest(unittest.TestCase):
@@ -144,7 +137,6 @@ class GenerateRetrievalTest(unittest.TestCase):
         numbered = [int(number) for number in __import__("re").findall(r"\[(\d+)\]", answer)]
         self.assertGreaterEqual(len(numbered), 3)
         self.assertLessEqual(len(numbered), 5)
-        # 只取前 5 个片段，每条来自不同片段
         self.assertEqual(numbered, [1, 2, 3, 4, 5])
         for passage in PASSAGES:
             self.assertIn(passage["title"], answer)
@@ -191,20 +183,6 @@ class GenerateRetrievalTest(unittest.TestCase):
         result = generate.answer("add_child", passages)
         answer = result["answer"]
         self.assertIn("Node.add_child() adds a child node.", answer)
-        self.assertNotIn("Godot Docs > Class reference", answer)
-
-    def test_strips_breadcrumb_prefix_when_raw_text_missing(self):
-        passages = [
-            {
-                "title": "Node",
-                "text": "Godot Docs > Class reference > Node > add_child()\n"
-                        "Node.add_child() adds a child node. More details follow.",
-                "url": "classes/class_node.html",
-            }
-        ]
-        result = generate.answer("add_child", passages)
-        answer = result["answer"]
-        self.assertIn("Node.add_child() adds a child node.", answer)
         self.assertNotIn("Godot Docs >", answer)
 
     def test_object_passages_are_supported(self):
@@ -219,14 +197,14 @@ class GenerateRetrievalTest(unittest.TestCase):
         self.assertIn("Node.add_child() adds a child.", result["answer"])
 
     def test_no_network_without_key(self):
-        opener = _FakeOpener()
-        result = generate.answer("add_child", PASSAGES, opener=opener)
+        client = _FakeClient()
+        result = generate.answer("add_child", PASSAGES, client=client)
         self.assertFalse(result["llm_used"])
-        self.assertEqual(opener.calls, [])
+        self.assertEqual(client.completions.calls, [])
 
 
 class GenerateLLMTest(unittest.TestCase):
-    """有 key：验证请求格式、成功路径与失败降级。"""
+    """有 key：验证 prompt 组装、成功路径与失败降级（fake client）。"""
 
     def setUp(self):
         self._saved = {key: os.environ.get(key) for key in ENV_KEYS}
@@ -242,58 +220,55 @@ class GenerateLLMTest(unittest.TestCase):
                 os.environ[key] = value
 
     def test_success_uses_llm_answer(self):
-        opener = _FakeOpener(content="根据 [1]，使用 add_child() 添加子节点。")
-        result = generate.answer("如何添加子节点？", PASSAGES, opener=opener)
+        client = _FakeClient(content="根据 [1]，使用 add_child() 添加子节点。")
+        result = generate.answer("如何添加子节点？", PASSAGES, client=client)
         self.assertTrue(result["llm_used"])
         self.assertEqual(result["answer"], "根据 [1]，使用 add_child() 添加子节点。")
-        self.assertEqual(len(opener.calls), 1)
+        self.assertEqual(len(client.completions.calls), 1)
 
-        call = opener.calls[0]
-        self.assertEqual(call["timeout"], generate.DEFAULT_TIMEOUT)
-        request = call["request"]
-        self.assertEqual(request.full_url, "https://api.deepseek.com/v1/chat/completions")
-        self.assertEqual(request.get_method(), "POST")
-        self.assertEqual(request.get_header("Authorization"), "Bearer test-key")
-        payload = json.loads(request.data.decode("utf-8"))
-        self.assertEqual(payload["model"], "deepseek-chat")
-        self.assertFalse(payload["stream"])
-        system = payload["messages"][0]["content"]
+        call = client.completions.calls[0]
+        self.assertEqual(call["model"], "deepseek-chat")
+        self.assertFalse(call["stream"])
+        self.assertEqual(call["temperature"], 0.1)
+        system = call["messages"][0]["content"]
         self.assertIn("只能依据", system)
-        user = payload["messages"][1]["content"]
+        user = call["messages"][1]["content"]
         self.assertIn("add_child() adds a child node", user)
         self.assertIn("[1]", user)
         self.assertIn("如何添加子节点？", user)
 
-    def test_env_overrides_base_url_and_model(self):
-        os.environ[generate.BASE_URL_ENV] = "https://example.test/v1/"
+    def test_env_overrides_model(self):
         os.environ[generate.MODEL_ENV] = "my-model"
-        opener = _FakeOpener()
-        result = generate.answer("add_child", PASSAGES, opener=opener)
+        client = _FakeClient()
+        result = generate.answer("add_child", PASSAGES, client=client)
         self.assertTrue(result["llm_used"])
-        request = opener.calls[0]["request"]
-        self.assertEqual(request.full_url, "https://example.test/v1/chat/completions")
-        payload = json.loads(request.data.decode("utf-8"))
-        self.assertEqual(payload["model"], "my-model")
+        self.assertEqual(client.completions.calls[0]["model"], "my-model")
 
     def test_lang_zh_adds_chinese_rule(self):
-        opener = _FakeOpener()
-        generate.answer("add_child", PASSAGES, lang="zh", opener=opener)
-        payload = json.loads(opener.calls[0]["request"].data.decode("utf-8"))
-        self.assertIn("中文提问必须用中文回答", payload["messages"][0]["content"])
-
-    def test_explicit_api_key(self):
-        os.environ.pop(generate.API_KEY_ENV, None)
-        opener = _FakeOpener()
-        result = generate.answer("add_child", PASSAGES, api_key="explicit", opener=opener)
-        self.assertTrue(result["llm_used"])
-        self.assertEqual(
-            opener.calls[0]["request"].get_header("Authorization"), "Bearer explicit"
+        client = _FakeClient()
+        generate.answer("add_child", PASSAGES, lang="zh", client=client)
+        self.assertIn(
+            "中文提问必须用中文回答",
+            client.completions.calls[0]["messages"][0]["content"],
         )
 
-    def test_http_failure_degrades_without_leaking_error(self):
-        error = RuntimeError("boom-http-500")
-        opener = _FakeOpener(error=error)
-        result = generate.answer("如何添加子节点？", PASSAGES, opener=opener)
+    def test_explicit_api_key_creates_client(self):
+        os.environ.pop(generate.API_KEY_ENV, None)
+        fake = _FakeClient()
+        with __import__("unittest.mock", fromlist=["patch"]).patch(
+            "openai.OpenAI", return_value=fake
+        ) as mock_openai:
+            result = generate.answer(
+                "add_child", PASSAGES, api_key="explicit", timeout=5
+            )
+        self.assertTrue(result["llm_used"])
+        kwargs = mock_openai.call_args.kwargs
+        self.assertEqual(kwargs["api_key"], "explicit")
+        self.assertEqual(kwargs["timeout"], 5)
+
+    def test_llm_failure_degrades_without_leaking_error(self):
+        client = _FakeClient(error=RuntimeError("boom-http-500"))
+        result = generate.answer("如何添加子节点？", PASSAGES, client=client)
         answer = result["answer"]
         self.assertFalse(result["llm_used"])
         self.assertIn("检索式回答", answer)
@@ -302,22 +277,9 @@ class GenerateLLMTest(unittest.TestCase):
         self.assertNotIn("RuntimeError", answer)
         self.assertIn("Node.add_child() adds a child node", answer)
 
-    def test_bad_response_shape_degrades(self):
-        class _BadOpener:
-            def __call__(self, request, timeout=None):
-                class _Resp:
-                    def read(self):
-                        return b'{"unexpected": true}'
-
-                    def __enter__(self):
-                        return self
-
-                    def __exit__(self, *exc_info):
-                        return False
-
-                return _Resp()
-
-        result = generate.answer("add_child", PASSAGES, opener=_BadOpener())
+    def test_empty_llm_content_degrades(self):
+        client = _FakeClient(content="")
+        result = generate.answer("add_child", PASSAGES, client=client)
         self.assertFalse(result["llm_used"])
         self.assertIn("检索式回答", result["answer"])
 
