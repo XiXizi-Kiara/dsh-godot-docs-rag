@@ -41,6 +41,27 @@ class FakeRAG:
         return {"n_chunks": 26076, "n_docs": 1596, "device": "cuda", "ready": True}
 
 
+class FakeChunkRAG:
+    def __init__(self):
+        self._chunks = [
+            {"chunk_id": "c1", "doc_id": "classes/class_node", "doc_type": "class",
+             "title": "Node", "breadcrumbs": ["Godot Docs", "Class reference", "Node"],
+             "url": "classes/class_node.html", "anchor": "class-node-method-add-child",
+             "symbol": "Node.add_child", "raw_text": "Adds a child node. " * 30},
+            {"chunk_id": "c2", "doc_id": "classes/class_treeitem", "doc_type": "class",
+             "title": "TreeItem", "breadcrumbs": ["Godot Docs", "Class reference", "TreeItem"],
+             "url": "classes/class_treeitem.html", "anchor": "class-treeitem-method-add-child",
+             "symbol": "TreeItem.add_child", "raw_text": "Adds a child TreeItem."},
+            {"chunk_id": "c3", "doc_id": "classes/class_node", "doc_type": "class",
+             "title": "Node", "breadcrumbs": ["Godot Docs", "Class reference", "Node"],
+             "url": "classes/class_node.html", "anchor": "class-node-signal-child-entered-tree",
+             "symbol": "Node.child_entered_tree", "raw_text": "Emitted when a child enters."},
+        ]
+
+    def chunks(self):
+        return self._chunks
+
+
 class TestAgentApi(unittest.TestCase):
     def test_search_payload_shape(self):
         payload = agent_api.search_payload(FakeRAG(), "add_child", k=3)
@@ -79,6 +100,37 @@ class TestAgentApi(unittest.TestCase):
     def test_error_payload_value_error_and_unknown(self):
         self.assertEqual(agent_api.error_payload(ValueError("bad")).get("code"), "BAD_PARAMS")
         self.assertEqual(agent_api.error_payload(RuntimeError("boom")).get("code"), "INTERNAL")
+
+    def test_find_symbol_exact_and_class_first(self):
+        rag = FakeChunkRAG()
+        payload = agent_api.find_symbol_payload(rag, "Node.add_child")
+        self.assertFalse(payload["approximate"])
+        self.assertEqual(payload["matches"][0]["symbol"], "Node.add_child")
+        self.assertEqual(payload["matches"][0]["kind"], "method")
+
+    def test_find_symbol_bare_name_returns_classes_first(self):
+        payload = agent_api.find_symbol_payload(FakeChunkRAG(), "add_child")
+        symbols = [m["symbol"] for m in payload["matches"]]
+        self.assertEqual(symbols[0], "Node.add_child")
+        self.assertIn("TreeItem.add_child", symbols)
+
+    def test_find_symbol_class_and_kind_filter(self):
+        payload = agent_api.find_symbol_payload(FakeChunkRAG(), "add_child", class_name="TreeItem")
+        self.assertEqual([m["symbol"] for m in payload["matches"]], ["TreeItem.add_child"])
+        payload = agent_api.find_symbol_payload(FakeChunkRAG(), "add_child", kind="signal")
+        self.assertEqual(payload["matches"], [])
+
+    def test_find_symbol_empty_name_and_bad_kind(self):
+        with self.assertRaises(agent_api.ApiError):
+            agent_api.find_symbol_payload(FakeChunkRAG(), "   ")
+        with self.assertRaises(agent_api.ApiError):
+            agent_api.find_symbol_payload(FakeChunkRAG(), "add_child", kind="nope")
+
+    def test_find_symbol_approximate(self):
+        payload = agent_api.find_symbol_payload(FakeChunkRAG(), "add_chlid")
+        self.assertTrue(payload["approximate"])
+        self.assertTrue(payload["matches"])
+        self.assertEqual(payload["matches"][0]["symbol"], "Node.add_child")
 
 
 if __name__ == "__main__":

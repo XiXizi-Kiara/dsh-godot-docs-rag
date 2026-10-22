@@ -5,6 +5,7 @@
 """
 from __future__ import annotations
 
+import difflib
 import os
 import re
 from datetime import datetime
@@ -126,3 +127,105 @@ def error_payload(exc: Exception) -> dict:
     if isinstance(exc, ValueError):
         return {"code": "BAD_PARAMS", "message": str(exc), "hint": ""}
     return {"code": "INTERNAL", "message": f"{type(exc).__name__}: {exc}", "hint": ""}
+
+
+_SYMBOL_KINDS = (
+    "method", "property", "signal", "constant", "enum",
+    "constructor", "operator", "annotation", "theme_item",
+)
+_KIND_RE = re.compile(r"-(" + "|".join(_SYMBOL_KINDS) + r")-")
+
+
+def _chunk_kind(chunk: dict) -> str:
+    match = _KIND_RE.search(chunk.get("anchor") or "")
+    return match.group(1) if match else ""
+
+
+def _symbol_full(chunk: dict) -> str:
+    return (chunk.get("symbol") or "").lower()
+
+
+def _symbol_bare(chunk: dict) -> str:
+    symbol = _symbol_full(chunk)
+    return symbol.split(".", 1)[1] if "." in symbol else symbol
+
+
+def _match_payload(chunk: dict, base: str | None) -> dict:
+    url = doc_url(chunk.get("url", ""), base)
+    anchor = chunk.get("anchor") or ""
+    if anchor and "#" not in url:
+        url = f"{url}#{anchor}"
+    return {
+        "symbol": chunk.get("symbol", ""),
+        "kind": _chunk_kind(chunk),
+        "title": chunk.get("title", ""),
+        "breadcrumbs": list(chunk.get("breadcrumbs") or []),
+        "url": url,
+        "text": trim(chunk.get("raw_text", ""), 600),
+    }
+
+
+def find_symbol_payload(
+    rag,
+    name: str,
+    class_name: str | None = None,
+    kind: str | None = None,
+    limit: int = 5,
+    base: str | None = None,
+) -> dict:
+    query = (name or "").strip().lower()
+    if not query:
+        raise ApiError("BAD_PARAMS", "name 不能为空")
+    if kind and kind not in _SYMBOL_KINDS:
+        raise ApiError("BAD_PARAMS", f"kind 必须是 {', '.join(_SYMBOL_KINDS)} 之一")
+    limit = max(1, min(int(limit), 20))
+    class_filter = (class_name or "").strip().lower()
+
+    chunks = list(rag.chunks())
+    if class_filter:
+        chunks = [c for c in chunks if _symbol_full(c).split(".", 1)[0] == class_filter]
+    if kind:
+        chunks = [c for c in chunks if _chunk_kind(c) == kind]
+
+    tiers = [
+        [c for c in chunks if _symbol_full(c) == query],
+        [c for c in chunks if _symbol_bare(c) == query],
+        [c for c in chunks if query in _symbol_full(c)],
+    ]
+    matches: list[dict] = []
+    seen: set[str] = set()
+    for tier in tiers:
+        tier.sort(key=lambda c: (c.get("doc_type") != "class", _symbol_full(c)))
+        for chunk in tier:
+            chunk_id = chunk.get("chunk_id", "")
+            if chunk_id in seen:
+                continue
+            seen.add(chunk_id)
+            matches.append(_match_payload(chunk, base))
+            if len(matches) >= limit:
+                break
+        if len(matches) >= limit:
+            break
+
+    approximate = False
+    if not matches:
+        fulls = sorted({_symbol_full(c) for c in chunks if _symbol_full(c)})
+        bares = sorted({_symbol_bare(c) for c in chunks if _symbol_bare(c)})
+        close = set(difflib.get_close_matches(query, fulls + bares, n=limit, cutoff=0.6))
+        for chunk in chunks:
+            if (_symbol_full(chunk) in close or _symbol_bare(chunk) in close) and chunk.get("chunk_id") not in seen:
+                seen.add(chunk.get("chunk_id", ""))
+                matches.append(_match_payload(chunk, base))
+                if len(matches) >= limit:
+                    break
+        approximate = bool(matches)
+
+    for index, match in enumerate(matches, start=1):
+        match["rank"] = index
+    return {
+        "name": name,
+        "class_name": class_name or "",
+        "kind": kind or "",
+        "approximate": approximate,
+        "matches": matches,
+    }

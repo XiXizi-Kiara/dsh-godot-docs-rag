@@ -98,6 +98,11 @@ class GodotRAG:
             )
         return info
 
+    def chunks(self) -> list[dict]:
+        """返回已加载的 chunk 列表（只读；供工具层做符号检索）。"""
+        self._ensure_loaded()
+        return self._chunks
+
     # -- 检索 -------------------------------------------------------------
     def search(self, query: str, k: int = config.DEFAULT_TOP_K, mode: str = "hybrid") -> list[dict]:
         if not isinstance(query, str) or not query.strip():
