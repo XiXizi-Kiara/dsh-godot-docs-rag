@@ -39,6 +39,7 @@ const SEARCH = {
     (value.results || []).forEach((r, index) => {
       lines.push(`\n[${index + 1}] ${r.title}${r.symbol ? ` — ${r.symbol}` : ''}`);
       if (r.breadcrumbs?.length) lines.push(`   path: ${r.breadcrumbs.join(' > ')}`);
+      if (r.doc_id) lines.push(`   doc_id: ${r.doc_id}`);
       lines.push(`   url: ${r.url}`);
       if (r.text) lines.push(`   ${r.text}`);
     });

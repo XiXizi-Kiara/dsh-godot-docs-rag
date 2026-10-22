@@ -84,6 +84,8 @@ def search_payload(rag, query: str, k: int = 5, mode: str = "hybrid", base: str 
             {
                 "rank": r["rank"],
                 "score": round(float(r["score"]), 6),
+                "doc_id": r.get("doc_id", ""),
+                "chunk_id": r.get("chunk_id", ""),
                 "title": r["title"],
                 "symbol": r.get("symbol", ""),
                 "breadcrumbs": list(r["breadcrumbs"]),

@@ -69,6 +69,8 @@ class TestAgentApi(unittest.TestCase):
         self.assertEqual(payload["mode"], "hybrid")
         r = payload["results"][0]
         self.assertEqual(r["symbol"], "Node.add_child")
+        self.assertEqual(r["doc_id"], "classes/class_node")
+        self.assertEqual(r["chunk_id"], "c1")
         self.assertTrue(r["url"].startswith("https://docs.godotengine.org/en/stable/"))
         self.assertLessEqual(len(r["text"]), 701)
 

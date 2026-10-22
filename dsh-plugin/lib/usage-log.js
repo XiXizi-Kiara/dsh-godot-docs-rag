@@ -60,6 +60,7 @@ export class UsageLog {
     this._closed = false;
     this._bytes = 0;
     this._checked = false;
+    this._rotations = 0;
   }
 
   recordToolCall(exec, result, latencyMs) {
@@ -87,6 +88,13 @@ export class UsageLog {
       results: summarizeResults(exec?.name, value),
       backend: value?.backend ?? null,
     };
+    if (value && exec?.name === 'godot_search_docs') {
+      if (value.mode) event.args.mode = value.mode;
+      if (value.k) event.args.k = value.k;
+      if (value.query && event.args.query === undefined && !this.cfg.redactQueries) {
+        event.args.query = truncate(value.query);
+      }
+    }
     if (failed) delete event.args.query; // 失败调用也不需要原文；保持结构一致
     this._enqueue(event);
   }
@@ -143,12 +151,16 @@ export class UsageLog {
   async _rotate() {
     const dir = path.dirname(this.cfg.logPath);
     const base = path.basename(this.cfg.logPath, '.jsonl');
-    const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\..+/, '');
+    this._rotations += 1;
+    const stamp = `${Date.now()}-${this._rotations}`;
     await fs.rename(this.cfg.logPath, path.join(dir, `${base}.${stamp}.jsonl`)).catch(() => {});
-    const all = (await fs.readdir(dir)).filter((name) => name.startsWith(base)).sort();
-    const excess = all.length - this.cfg.maxFiles;
+    const all = (await fs.readdir(dir)).filter((name) => name.startsWith(base) && name.endsWith('.jsonl'));
+    const current = path.basename(this.cfg.logPath);
+    const rotated = all.filter((name) => name !== current).sort();
+    const keepRotated = Math.max(0, this.cfg.maxFiles - 1);
+    const excess = rotated.length - keepRotated;
     for (let index = 0; index < excess; index += 1) {
-      await fs.unlink(path.join(dir, all[index])).catch(() => {});
+      await fs.unlink(path.join(dir, rotated[index])).catch(() => {});
     }
     this._bytes = 0;
   }
