@@ -20,15 +20,18 @@ DSH 按 profile 隔离配置，patch 层文件位于：
 $HOME\.dsh\profiles\<profile>\cordis.patch.yml
 ```
 
-- 桌面客户端：`profiles\desktop\cordis.patch.yml`
-- Web GUI（本会话）：`profiles\web\cordis.patch.yml`
+- **以 `$env:DSH_PROFILE` 为准**（在本机 shell 里执行 `echo $env:DSH_PROFILE` 确认；当前为 `desktop`）；
+- 桌面客户端与 Web GUI 都可能运行在 `desktop` profile，不要按"桌面/网页"猜 profile；
+- 找不到时列出 `$HOME\.dsh\profiles\` 下的目录确认。
 
 ## 2. 追加 MCP 配置（stdio，推荐）
 
 先备份，再在文件末尾追加一条 YAML 数组元素（保留原有条目）：
 
 ```powershell
-$patch = "$HOME\.dsh\profiles\web\cordis.patch.yml"
+$profileName = $env:DSH_PROFILE
+if (-not $profileName) { $profileName = "desktop" }
+$patch = "$HOME\.dsh\profiles\$profileName\cordis.patch.yml"
 Copy-Item $patch "$patch.bak-$(Get-Date -Format yyyyMMdd-HHmmss)"
 
 @'

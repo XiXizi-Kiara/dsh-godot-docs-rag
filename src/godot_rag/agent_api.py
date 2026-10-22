@@ -56,11 +56,13 @@ def document_text(doc: dict) -> str:
 
     真实索引里的文档没有 html_text（那是 service 层临时拼的）；
     这里直接消费 sections，保证 MCP 与 DSH 两端 get_doc 都有正文。
+    与文档标题同名的 section 标题不再重复输出。
     """
+    doc_title = (doc.get("title") or "").strip()
     parts: list[str] = []
     for section in doc.get("sections") or []:
         title = (section.get("title") or "").strip()
-        if title:
+        if title and title != doc_title:
             parts.append(title)
         for block in section.get("blocks") or []:
             text = (block.get("text") or "").strip()

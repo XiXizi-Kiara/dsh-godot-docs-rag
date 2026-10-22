@@ -92,7 +92,7 @@ plugin_manager remove_bundle(target: '@local/godot-docs-rag')
 | 日志行默认无文件；启用后写入 tool_call（含 doc_id/mode/backend） | ✅ |
 | 关闭日志行后不再增长 | ✅ |
 | `analyze_usage.py` 报告 / `--export-qa` | ✅ |
-| 反馈命令 `/godot-rag-good`、`/godot-rag-bad` | ⚠️ 未实测（需人工在输入框输入；命令注册逻辑与事件监听已就绪） |
-| 杀进程自愈 | ⚠️ 未实测（沙箱禁止枚举/终止宿主子进程；RagBackend 单测覆盖崩溃重启） |
-| DSH 重启无孤儿进程 | ⚠️ 未实测（需重启 DSH；Python 侧监听 stdin EOF 自杀） |
+| 反馈命令 `/godot-rag-good`、`/godot-rag-bad` | ✅ 用户实测（2026-10-22）：日志出现两条 `feedback`，备注 UTF-8 正常；DSH 重启后内存 refs 为空属预期 |
+| 杀进程自愈 | ✅ 用户实测（2026-10-22）：结束桥进程后再次调用自动恢复 |
+| DSH 重启无孤儿进程 | ✅ 用户实测（2026-10-22） |
 | `CONFIG_INVALID` 实机验证 | ⚠️ 未实测（单测覆盖；未破坏性修改 profile） |
