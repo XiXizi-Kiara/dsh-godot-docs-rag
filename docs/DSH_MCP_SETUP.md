@@ -1,5 +1,7 @@
 # 把 Godot RAG 接入 DSH（MCP）
 
+> 说明：`$PY` 指 conda 环境 godotrag 的 python（`$PY = "$HOME\.conda\envs\godotrag\python.exe"`）；`<PROJECT_DIR>` 指本仓库根目录。
+
 DSH 内置 MCP 客户端插件 `@deepseek-ai/dsh-mcp-client`，无需额外安装 DSH 插件。
 本项目的 MCP 服务 [src/godot_rag/mcp_server.py](../src/godot_rag/mcp_server.py) 提供 4 个工具：
 
@@ -15,7 +17,7 @@ DSH 内置 MCP 客户端插件 `@deepseek-ai/dsh-mcp-client`，无需额外安�
 DSH 按 profile 隔离配置，patch 层文件位于：
 
 ```
-C:\Users\Kiara\.dsh\profiles\<profile>\cordis.patch.yml
+$HOME\.dsh\profiles\<profile>\cordis.patch.yml
 ```
 
 - 桌面客户端：`profiles\desktop\cordis.patch.yml`
@@ -36,11 +38,11 @@ Copy-Item $patch "$patch.bak-$(Get-Date -Format yyyyMMdd-HHmmss)"
   config:
     serverName: godot
     transport: stdio
-    command: 'C:\Users\Kiara\.conda\envs\godotrag\python.exe'
+    command: '$PY'
     args: ['-m', 'godot_rag.mcp_server']
-    cwd: 'C:\Users\Kiara\Desktop\GodotRag'
+    cwd: '<PROJECT_DIR>'
     env:
-      PYTHONPATH: 'C:\Users\Kiara\Desktop\GodotRag\src'
+      PYTHONPATH: '<PROJECT_DIR>\src'
     toolCallTimeoutMs: 120000
 '@ | Add-Content -Encoding utf8 $patch
 ```
@@ -70,9 +72,9 @@ mcp__godot__rag_stats
 如果希望 MCP 服务常驻、被多个 agent/客户端共享，可先启动 HTTP 传输：
 
 ```powershell
-cd C:\Users\Kiara\Desktop\GodotRag
-$env:PYTHONPATH = "C:\Users\Kiara\Desktop\GodotRag\src"
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -m godot_rag.mcp_server --transport streamable-http --port 8766
+cd <PROJECT_DIR>
+$env:PYTHONPATH = "<PROJECT_DIR>\src"
+& "$PY" -m godot_rag.mcp_server --transport streamable-http --port 8766
 ```
 
 再把 patch 条目改为：

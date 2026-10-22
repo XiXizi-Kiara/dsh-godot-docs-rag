@@ -1,7 +1,9 @@
 # Godot RAG —— 模块接口约定（冻结版 v1）
 
+> 说明：`$PY` 指 conda 环境 godotrag 的 python（`$PY = "$HOME\.conda\envs\godotrag\python.exe"`）；`<PROJECT_DIR>` 指本仓库根目录。
+
 > 所有模块共享本约定。改动接口必须同步修改本文件并通知 Lead。
-> 项目根目录：`C:\Users\Kiara\Desktop\GodotRag`，源码在 `src/godot_rag/`，通过
+> 项目根目录：`<PROJECT_DIR>`，源码在 `src/godot_rag/`，通过
 > `src` 加入 `PYTHONPATH` 后 `import godot_rag`。
 
 ## 1. 目录与产物
@@ -155,10 +157,10 @@ translate_query(query: str) -> tuple[str, list[tuple[str, str]]]
 ## 10. 测试与验收
 
 - 运行环境：**必须使用 conda `godotrag` 环境的解释器**（见 docs/ENV.md）：
-  `C:\Users\Kiara\.conda\envs\godotrag\python.exe`
-- 测试命令：`& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" scripts\run_tests.py -v`
+  `$PY`
+- 测试命令：`& "$PY" scripts\run_tests.py -v`
   （或 `$env:PYTHONPATH="src"; ...python.exe -m unittest discover -s tests`）
-- 必须全绿（不依赖 GPU / 不依赖全量索引）——当前 **116 个 unittest**。
+- 必须全绿（不依赖 GPU / 不依赖全量索引）——当前 **147 个 unittest**（另有 `dsh-plugin/test/*.test.js` 逐文件 `node` 运行）。
 - Lead 验收：全量 build 成功、`search`/`ask`/`serve` 冒烟、eval 达到 Recall@5 ≥ 0.85、PageHit@5 ≥ 0.95（当前 hybrid 0.875 / 0.975）。
 - 运行依赖见 [docs/ENV.md](ENV.md) 与 [requirements.txt](../requirements.txt)：torch(cu128)、
   sentence-transformers、faiss-cpu、rank_bm25、jieba、fastapi、uvicorn、openai、tiktoken、mcp 等。
@@ -186,3 +188,46 @@ python -m godot_rag.mcp_server [--transport stdio|streamable-http|sse]
 - 结果 URL 由相对路径补全为 `https://docs.godotengine.org/en/stable/...`；
 - DSH 侧配置见 [docs/DSH_MCP_SETUP.md](DSH_MCP_SETUP.md)（`@deepseek-ai/dsh-mcp-client`，
   stdio 或 streamable-http）。
+
+## 12. DSH 原生插件（`agent_api.py` / `dsh_bridge.py` / `dsh-plugin/`）
+
+**`agent_api.py`（MCP 与 DSH 插件共用）**
+
+```python
+class ApiError(Exception):            # code: BAD_PARAMS | INDEX_NOT_READY | INTERNAL
+    code: str; message: str; hint: str
+def doc_url(url, base=None) -> str
+def trim(text, limit) -> str
+def strip_html(text) -> str
+def document_text(doc: dict) -> str   # 从 Document.sections 提取纯文本
+def search_payload(rag, query, k=5, mode="hybrid", base=None) -> dict
+def find_symbol_payload(rag, name, class_name=None, kind=None, limit=5, base=None) -> dict
+def get_doc_payload(rag, doc_id, offset=0, limit=8000, base=None) -> dict
+def stats_payload(rag, index_dir=None) -> dict
+def error_payload(exc) -> dict        # -> {"code","message","hint"}
+```
+
+- `search_payload.results[]` 含 `rank/score/doc_id/chunk_id/title/symbol/breadcrumbs/url/text`；
+- `find_symbol_payload.matches[]` 含 `symbol/kind/title/breadcrumbs/url/text`，`url` 带 `#anchor`；
+- `get_doc_payload` 返回 `total_chars/offset/text/truncated`；真实索引没有 `html_text`，正文由 `document_text()` 从 sections 生成。
+
+**`dsh_bridge.py`（stdin/stdout JSON Lines，一行一个对象）**
+
+```python
+python -m godot_rag.dsh_bridge [--index-dir DIR] [--device auto|cpu|cuda] [--docs-base URL]
+# 请求  {"id":1,"method":"search","params":{...}}
+# 响应  {"id":1,"ok":true,"result":{...},"meta":{pid,version,device,index_dir,index_mtime,n_chunks}}
+# 错误  {"id":1,"ok":false,"error":{"code","message","hint"}}
+```
+
+- 方法：`ping` / `warmup` / `search` / `find_symbol` / `get_doc` / `stats` / `shutdown`；
+- 错误码固定：`BAD_PARAMS` / `UNKNOWN_METHOD` / `INDEX_NOT_READY` / `INTERNAL`；
+- stdout 只写协议，日志写 stderr；stdin EOF 或 `shutdown` 后退出；单请求异常不终止进程。
+
+**`dsh-plugin/`（bundle）**
+
+- 两个插件行：`@local/godot-docs-rag`（工具，默认启用）与 `@local/godot-docs-rag/usage-log`
+  （使用日志，默认 `disabled: true`）；
+- bundle 的 `cordis.patch.yml` **不含任何机器路径**；配置优先级：行 config → 环境变量
+  （`GODOT_RAG_PYTHON` / `GODOT_RAG_PROJECT` / `GODOT_RAG_INDEX_DIR`）→ 可移植默认值 → `CONFIG_INVALID`；
+- 安装与排错见 [docs/DSH_PLUGIN_SETUP.md](DSH_PLUGIN_SETUP.md)，日志字段见 [docs/USAGE_LOG.md](USAGE_LOG.md)。

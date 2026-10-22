@@ -5,7 +5,7 @@
 ## 解释器
 
 ```
-C:\Users\Kiara\.conda\envs\godotrag\python.exe
+$PY
 ```
 
 ## 已安装依赖（实测版本）
@@ -45,7 +45,7 @@ CPU-only 机器：把第 1 步替换为 `pip install "torch==2.11.0"` 即可，�
 ## GPU 验证
 
 ```powershell
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
+& "$PY" -c "import torch; print(torch.__version__, torch.cuda.is_available(), torch.cuda.get_device_name(0))"
 # 预期：2.11.0+cu128 True NVIDIA GeForce RTX 4060 Laptop GPU
 ```
 
@@ -62,7 +62,7 @@ CrossEncoder 精排 100 条约 **1 秒**（GPU）。CPU 会自动回退，速度
 
 ```powershell
 # 方式 A：让 tiktoken 自行下载（你的网络若可达）
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+& "$PY" -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
 ```
 
 ```powershell
@@ -72,7 +72,7 @@ $cacheDir = Join-Path $env:TEMP "data-gym-cache"
 New-Item -ItemType Directory -Force -Path $cacheDir | Out-Null
 Invoke-WebRequest -Uri "https://openaipublic.blob.core.windows.net/encodings/cl100k_base.tiktoken" `
   -OutFile (Join-Path $cacheDir "9b5ad71b2ce5302211f9c61530b329a4922fc6a4")
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -c "import tiktoken; print(len(tiktoken.get_encoding('cl100k_base').encode('test')))"
+& "$PY" -c "import tiktoken; print(len(tiktoken.get_encoding('cl100k_base').encode('test')))"
 ```
 
 执行成功后 `generate.py` 会自动使用 tiktoken，无需改代码。
@@ -80,8 +80,8 @@ Invoke-WebRequest -Uri "https://openaipublic.blob.core.windows.net/encodings/cl1
 ## 常用命令
 
 ```powershell
-$PY = "C:\Users\Kiara\.conda\envs\godotrag\python.exe"
-cd C:\Users\Kiara\Desktop\GodotRag
+$PY = "$HOME\.conda\envs\godotrag\python.exe"
+cd <PROJECT_DIR>
 
 & $PY scripts\run.py build                    # 重建索引（faiss + BM25）
 & $PY scripts\run.py search "add_child" --json

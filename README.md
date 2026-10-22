@@ -11,9 +11,9 @@
 - **中文可用**：268 条 Godot 领域术语映射 + jieba 分词补充，中文提问也能命中英文文档
 - **GPU 加速**：godotrag 环境已装 CUDA 版 torch（RTX 4060），全量嵌入约 100 秒、单次精排约 0.3 秒；
   无 GPU 时自动回退 CPU
-- **四种形态**：Python 库、CLI（`--json` 供 agent 解析）、FastAPI 服务 + 中文单页 UI
-  （保留零依赖标准库服务作为 `--backend stdlib`）、**MCP 服务**（stdio / streamable-http，
-  agent 可直接把 Godot 文档检索当原生工具调用）
+- **五种形态**：Python 库、CLI（`--json` 供 agent 解析）、FastAPI 服务 + 中文单页 UI
+  （保留零依赖标准库服务作为 `--backend stdlib`）、**MCP 服务**（stdio / streamable-http）、
+  **DSH 原生插件**（4 个 `godot_*` 工具 + 默认关闭的使用日志行）
 - **可选 LLM 生成**：openai SDK 调 DeepSeek/OpenAI 兼容接口；无 key 时返回检索式回答 + 引用
 
 ## 环境与依赖
@@ -21,8 +21,8 @@
 统一使用 conda 环境 `godotrag`（Python 3.12）：
 
 ```powershell
-$PY = "C:\Users\Kiara\.conda\envs\godotrag\python.exe"
-cd C:\Users\Kiara\Desktop\GodotRag
+$PY = "$HOME\.conda\envs\godotrag\python.exe"
+cd <PROJECT_DIR>
 ```
 
 依赖已安装完毕（清单见 [requirements.txt](requirements.txt)、说明见 [docs/ENV.md](docs/ENV.md)）：
@@ -151,6 +151,21 @@ MCP 服务把文档检索包装成 agent 可直接调用的工具（协议层由
 - 默认 `stdio` 传输（agent 本地集成最简单），也支持 `streamable-http`（常驻/远程）；
 - DSH 的配置方式见 [docs/DSH_MCP_SETUP.md](docs/DSH_MCP_SETUP.md)。
 
+## DSH 原生插件（推荐）
+
+`dsh-plugin/` 是一个 DSH bundle，安装后提供 4 个原生工具，不经过 MCP：
+
+| 工具 | 作用 |
+|---|---|
+| `godot_search_docs` | 混合检索，返回标题、面包屑、`doc_id`、URL、片段 |
+| `godot_find_symbol` | 精确 API 符号直达（含方法/属性/信号/常量/枚举） |
+| `godot_get_doc` | 按 `doc_id` 读整页原文，可 `offset`/`limit` 续读 |
+| `godot_rag_stats` | 索引状态、设备、模型、解析后的配置来源 |
+
+- 插件自管一个 Python 子进程（JSON Lines 协议，`godot_rag.dsh_bridge`），首次调用冷加载约 25–35 s、之后单查询 0.1–0.5 s；
+- 同一 bundle 里另有**默认关闭**的"使用日志"行，可记录检索轨迹与反馈，用于改进检索；
+- 安装、配置、排错见 [docs/DSH_PLUGIN_SETUP.md](docs/DSH_PLUGIN_SETUP.md)，日志说明见 [docs/USAGE_LOG.md](docs/USAGE_LOG.md)。
+
 ## HTTP API（FastAPI）
 
 ```
@@ -166,20 +181,25 @@ GET  /api/doc?doc_id=classes/class_node
 
 ```
 src/godot_rag/     parse_rst / chunk / embed / bm25 / index / retrieve / generate /
-                   service（标准库）/ service_fastapi（FastAPI）/ mcp_server（MCP）/ cli / eval
-scripts/           run.py（统一入口）、run_tests.py、fetch_models.py、validate_qa.py
+                   service（标准库）/ service_fastapi（FastAPI）/ mcp_server（MCP）/
+                   agent_api（工具 payload 层）/ dsh_bridge（DSH JSONL 桥）/ cli / eval
+dsh-plugin/        DSH bundle：4 个原生工具 + 默认关闭的使用日志行 + 可移植性测试
+scripts/           run.py（统一入口）、run_tests.py、fetch_models.py、validate_qa.py、
+                   analyze_usage.py、probe_bridge.mjs
 data/processed/    documents.jsonl、chunks.jsonl、qa.jsonl
 data/index/        meta.json、chunks.pkl、faiss.index、bm25.pkl、docs.pkl
 data/reports/      eval.md / eval.json
 docs/              ENV.md（环境与依赖）、INTERFACES.md（模块接口）、USAGE.md（使用手册）、
-                   DSH_MCP_SETUP.md（DSH 的 MCP 接入步骤）、设计稿
-tests/             122 个 unittest（解析/分块/BM25/检索/CLI/服务/生成/评测/FastAPI/MCP）
+                   DSH_PLUGIN_SETUP.md（DSH 插件安装）、USAGE_LOG.md（使用日志）、
+                   DSH_MCP_SETUP.md（MCP 接入）、设计稿与实施计划
+tests/             Python unittest（解析/分块/BM25/检索/CLI/服务/生成/评测/FastAPI/MCP/
+                   agent_api/bridge/日志分析/可移植性）
 ```
 
 ## 测试
 
 ```powershell
-& $PY scripts\run_tests.py -v     # 116 tests，不依赖 GPU / 全量索引 / 网络
+& $PY scripts\run_tests.py -v     # 147 tests，不依赖 GPU / 全量索引 / 网络
 ```
 
 ## 已知限制
@@ -190,4 +210,5 @@ tests/             122 个 unittest（解析/分块/BM25/检索/CLI/服务/生�
 - 中文长尾表述依赖术语词典，未覆盖时召回有限；agent 场景建议直接用英文 query。
 - 图片/视频内容不进入索引（只收录文本）。
 - `hybrid+rerank` 在 GPU 上约 1.3 s/查询，适合离线或高质量场景；Web 交互默认用 hybrid。
+- DSH 插件首次调用需冷加载索引与模型（本机约 25–35 s）；可开启 `prewarm` 在插件启动时后台预热。
 - 本快照为 stable 版；文档更新后需重新 `build`。

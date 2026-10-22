@@ -39,13 +39,7 @@ PATTERNS = (
 
 # 历史文档示例：仅这些文件允许暂时存在机器路径。
 # M4 清理 docs 后必须清空；清空前新增的其它违规仍会失败。
-LEGACY_ALLOWLIST = {
-    "README.md",
-    "docs/USAGE.md",
-    "docs/INTERFACES.md",
-    "docs/ENV.md",
-    "docs/DSH_MCP_SETUP.md",
-}
+LEGACY_ALLOWLIST: set[str] = set()
 
 # 守卫自身的检测样例包含机器路径字面量，不能扫描自己。
 SELF_EXEMPT = {"tests/test_portability.py"}

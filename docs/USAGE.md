@@ -1,5 +1,7 @@
 # Godot RAG 使用手册（CLI / 生成层 / Web 服务）
 
+> 说明：`$PY` 指 conda 环境 godotrag 的 python（`$PY = "$HOME\.conda\envs\godotrag\python.exe"`）；`<PROJECT_DIR>` 指本仓库根目录。
+
 本文档介绍接口层的三种使用方式：命令行、Python 库问答、本地 Web 服务。
 接口定义见 `docs/INTERFACES.md`，运行环境见 `docs/ENV.md`。
 
@@ -14,11 +16,11 @@ CUDA 可用时自动走 GPU（RTX 4060 实测嵌入约 250–500 条/秒、精�
 
 ```powershell
 # 等价于设置 PYTHONPATH=src 后运行 python -m godot_rag
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" scripts\run.py search "add_child" --json
+& "$PY" scripts\run.py search "add_child" --json
 
 # 或者手动设置 PYTHONPATH（脚本 / 其他 Python 程序调用时）
 $env:PYTHONPATH = "src"
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -m godot_rag stats --json
+& "$PY" -m godot_rag stats --json
 ```
 
 所有子命令都支持 `--json`：此时 **stdout 只输出 JSON**，进度日志一律走 stderr，
@@ -193,11 +195,11 @@ $env:GODOT_RAG_DOCS_BASE_URL = "http://127.0.0.1:8000/"
 
 ```powershell
 # 全部单元测试（不依赖 GPU、全量索引与网络）
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" scripts\run_tests.py -v
+& "$PY" scripts\run_tests.py -v
 
 # 只跑接口层三组测试
 $env:PYTHONPATH = "src"
-& "C:\Users\Kiara\.conda\envs\godotrag\python.exe" -m unittest tests.test_service tests.test_cli tests.test_generate -v
+& "$PY" -m unittest tests.test_service tests.test_cli tests.test_generate -v
 ```
 
 - `test_generate.py`：检索式回答（摘要/要点/引用编号/不编造）、LLM 成功请求格式、
