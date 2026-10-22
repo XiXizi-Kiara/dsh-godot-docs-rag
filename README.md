@@ -70,8 +70,6 @@ cd <PROJECT_DIR>
 dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
 ```
 
-> 如果插件还没发布到市场（或你改的是本地代码），可以改为从本目录安装，步骤见 [docs/DSH_PLUGIN_SETUP.md](docs/DSH_PLUGIN_SETUP.md)。
-
 安装后第一次使用，如果提示找不到项目目录，按提示填入你的 GodotRag 文件夹（或设置环境变量 `GODOT_RAG_PROJECT`）——插件需要从这里读取索引。
 
 之后正常对话即可，AI 会在需要时自动调用 4 个工具：
