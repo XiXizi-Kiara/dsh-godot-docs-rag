@@ -225,8 +225,7 @@ scripts/           run.py（统一入口）、fetch_models.py、run_tests.py、v
 data/processed/    documents.jsonl、chunks.jsonl、qa.jsonl
 data/index/        索引产物（meta.json / chunks.pkl / faiss.index / bm25.pkl / docs.pkl）
 data/reports/      评测报告
-docs/              ENV / INTERFACES / USAGE / DSH_PLUGIN_SETUP / USAGE_LOG / DSH_MCP_SETUP /
-                   设计稿与实施计划（docs/superpowers/）
+docs/              ENV / INTERFACES / USAGE / DSH_PLUGIN_SETUP / USAGE_LOG / DSH_MCP_SETUP
 tests/             Python unittest（147 个）
 ```
 
@@ -240,6 +239,4 @@ for file in dsh-plugin/test/*.test.js; do node "$file"; done   # 插件 25 个�
 ### 约定
 
 - 仓库内禁止出现机器相关绝对路径（`tests/test_portability.py` 会拦截）；
-- 接口与数据结构以 [docs/INTERFACES.md](docs/INTERFACES.md) 为准；
-- DSH 插件设计见 [docs/superpowers/specs/2026-10-22-godot-rag-dsh-plugin-design.md](docs/superpowers/specs/2026-10-22-godot-rag-dsh-plugin-design.md)，
-  实施计划见 [docs/superpowers/plans/2026-10-22-godot-rag-dsh-plugin.md](docs/superpowers/plans/2026-10-22-godot-rag-dsh-plugin.md)。
+- 接口与数据结构以 [docs/INTERFACES.md](docs/INTERFACES.md) 为准。

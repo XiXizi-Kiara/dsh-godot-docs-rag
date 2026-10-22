@@ -65,7 +65,7 @@ plugin_manager install_bundle(target: <PROJECT_DIR>/dsh-plugin)
 | `CONFIG_INVALID` | 按错误里的 `<PYTHON_EXE>` / `<PROJECT_DIR>` 片段补 profile 覆盖；`godot_rag_stats` 可看解析来源 |
 | `INDEX_NOT_READY` | 索引未构建：`python scripts/run.py build` |
 | 首次调用超时 | 冷加载较慢；确认 `toolTimeoutMs` ≥ 120000，或开启 `prewarm` |
-| 宿主禁止 spawn | 若错误含 `EPERM` / `WinError 5`，说明宿主无法启动子进程；改用 HTTP 连接层方案（见设计稿 §12） |
+| 宿主禁止 spawn | 若错误含 `EPERM` / `WinError 5`，说明宿主无法启动子进程；备用方案是改用 HTTP 连接层（暂未实现） |
 | DSH 无法加载插件 | 查看插件管理器诊断；`node -e "import('<PROJECT_DIR>/dsh-plugin/index.js')"` 可本地自检 |
 
 ## 6. 卸载
