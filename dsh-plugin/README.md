@@ -4,12 +4,12 @@
 
 ## 安装
 
-**从 npm（发布后）**：
+**从 npm**：
 
 ```
 dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
 # 或在 DSH 里：
-plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
+plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.1")
 ```
 
 桌面版 DSH 的 profile 由应用自身管理，请在 **Settings → Plugins** 里按包名安装，或使用上面的 `plugin_manager` 工具。

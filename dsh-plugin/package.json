@@ -1,8 +1,18 @@
 {
   "name": "@xixizi-kiara/dsh-godot-docs-rag",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "在 DSH 中提供 Godot 官方文档检索、API 符号直达与整页读取（本地 RAG）",
   "license": "MIT",
+  "author": "XiXizi-Kiara",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/XiXizi-Kiara/dsh-godot-docs-rag.git",
+    "directory": "dsh-plugin"
+  },
+  "homepage": "https://github.com/XiXizi-Kiara/dsh-godot-docs-rag#readme",
+  "bugs": {
+    "url": "https://github.com/XiXizi-Kiara/dsh-godot-docs-rag/issues"
+  },
   "type": "module",
   "keywords": [
     "dsh",
@@ -37,7 +47,8 @@
     "locale/*.json",
     "icon.svg",
     "LICENSE",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "dsh": {
     "bundle": {

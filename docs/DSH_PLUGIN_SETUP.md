@@ -19,12 +19,12 @@
 
 ## 2. 安装
 
-**从 npm（发布后，推荐）**：
+**从 npm（推荐）**：
 
 ```powershell
 dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
 # 或在 DSH 内：
-#   plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
+#   plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.1")
 ```
 
 > 桌面版 DSH 的 profile 由应用自身管理，请用 **Settings → Plugins** 按包名安装，或在会话里调用 `plugin_manager`；应用运行期间 `dsh plugin` CLI 不会修改该 profile。

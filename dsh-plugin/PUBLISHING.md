@@ -39,7 +39,7 @@ npm publish --access public
 dsh plugin --profile web add @xixizi-kiara/dsh-godot-docs-rag
 
 # 或在 DSH 内（桌面版用 Settings → Plugins）
-plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
+plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.1")
 ```
 
 安装后配置 `projectDir` / `pythonExe`（见 docs/DSH_PLUGIN_SETUP.md），再调用 `godot_rag_stats` 自检。
