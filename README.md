@@ -59,17 +59,20 @@ cd <PROJECT_DIR>
 
 ## 用法 A：在 DSH 里直接问（推荐）
 
-安装一次插件（npm 包发布后可用；本地开发见下）：
+安装只需一次，根据你用的 DSH 版本选一种：
+
+**桌面版 DSH**：打开 DSH 的插件页（桌面版在 **Settings → Plugins**），搜索「Godot 文档 RAG」并安装。
+搜不到时，在安装入口直接粘贴包名：`@xixizi-kiara/dsh-godot-docs-rag`。
+
+**命令行版 DSH**：
 
 ```powershell
 dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
-# 或在 DSH 内：
-#   plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
 ```
 
-> 桌面版 DSH 的 profile 由应用自身管理：请在 **Settings → Plugins** 里按包名安装，或在会话里调用 `plugin_manager`。
-> 未发布 / 本地开发时，安装本目录：`plugin_manager install_bundle(target: "<PROJECT_DIR>/dsh-plugin")`。
-> **从 npm 安装后需要配置 `projectDir`**（或设置 `GODOT_RAG_PROJECT`），因为插件位于 `node_modules` 中，无法自动找到你的 GodotRag 仓库。
+> 如果插件还没发布到市场（或你改的是本地代码），可以改为从本目录安装，步骤见 [docs/DSH_PLUGIN_SETUP.md](docs/DSH_PLUGIN_SETUP.md)。
+
+安装后第一次使用，如果提示找不到项目目录，按提示填入你的 GodotRag 文件夹（或设置环境变量 `GODOT_RAG_PROJECT`）——插件需要从这里读取索引。
 
 之后正常对话即可，AI 会在需要时自动调用 4 个工具：
 
@@ -87,7 +90,7 @@ dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
 提示：
 
 - 第一次调用要加载索引与模型（约 25–35 秒），之后每次查询 0.1–0.5 秒；
-- 想消除首次等待：安装文档里的 `prewarm` 配置（插件启动时后台预热）；
+- 不想等第一次：在插件配置里开启 `prewarm`（插件启动时后台预加载，详见安装文档）；
 - 使用日志默认关闭；需要记录检索轨迹/反馈时，在插件管理列表打开"Godot 文档 RAG 使用日志"。
 
 详细安装、配置与排错：[docs/DSH_PLUGIN_SETUP.md](docs/DSH_PLUGIN_SETUP.md)
