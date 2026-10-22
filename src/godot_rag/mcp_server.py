@@ -15,18 +15,10 @@
 from __future__ import annotations
 
 import json
-import os
-import re
-import sys
+from pathlib import Path
 from typing import Literal
 
-from . import __version__
-
-# 文档站前缀：结果里的 url 是相对路径（如 classes/class_node.html），拼成可点击链接
-DOCS_BASE = (
-    os.environ.get("GODOT_RAG_DOCS_BASE_URL")
-    or "https://docs.godotengine.org/en/stable/"
-).rstrip("/") + "/"
+from . import __version__, agent_api
 
 _RAG = None
 _INDEX_DIR: str | None = None
@@ -52,62 +44,18 @@ def _get_rag():
 
 
 def _error_text(exc: Exception) -> str:
-    from .retrieve import IndexNotReady
-
-    if isinstance(exc, IndexNotReady):
-        # 用当前解释器拼命令，避免把某台机器的 conda 路径写进仓库
-        py = sys.executable or "python"
-        return (
-            "索引尚未构建。请先在项目根目录运行：\n"
-            f"{py} scripts\\run.py build\n"
-            "（若当前解释器不是 godotrag 环境，请改用该环境的 python 执行同一命令）"
-        )
-    return f"Godot RAG 执行失败：{type(exc).__name__}: {exc}"
-
-
-def _doc_url(url: str) -> str:
-    url = (url or "").strip()
-    if not url:
-        return DOCS_BASE
-    if url.startswith(("http://", "https://")):
-        return url
-    return DOCS_BASE + url.lstrip("/")
-
-
-def _trim(text: str, limit: int) -> str:
-    text = re.sub(r"\s+", " ", text or "").strip()
-    return text if len(text) <= limit else text[:limit].rstrip() + "…"
-
-
-def _strip_html(text: str) -> str:
-    text = re.sub(r"<br\s*/?>", "\n", text or "")
-    text = re.sub(r"</(p|h[1-6]|li|div)>", "\n", text)
-    text = re.sub(r"<[^>]+>", "", text)
-    return re.sub(r"\n{3,}", "\n\n", text).strip()
+    err = agent_api.error_payload(exc)
+    text = err["message"]
+    if err.get("hint"):
+        text = f"{text}。{err['hint']}"
+    return text
 
 
 def _search_impl(query: str, k: int = 5, mode: str = "hybrid") -> str:
     try:
-        results = _get_rag().search(query, k=k, mode=mode)
-    except Exception as exc:  # noqa: BLE001 - MCP 工具应返回可读错误而非抛异常
+        payload = agent_api.search_payload(_get_rag(), query, k=k, mode=mode)
+    except Exception as exc:  # noqa: BLE001
         return _error_text(exc)
-    payload = {
-        "query": query,
-        "mode": mode,
-        "k": k,
-        "results": [
-            {
-                "rank": r["rank"],
-                "score": round(float(r["score"]), 6),
-                "title": r["title"],
-                "symbol": r.get("symbol", ""),
-                "breadcrumbs": r["breadcrumbs"],
-                "url": _doc_url(r["url"]),
-                "text": _trim(r.get("raw_text") or r["text"], 700),
-            }
-            for r in results
-        ],
-    }
     return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
@@ -124,7 +72,7 @@ def _ask_impl(query: str, k: int = 6, mode: str = "hybrid") -> str:
         "引用：",
     ]
     for cit in result.get("citations") or []:
-        url = _doc_url(cit.get("url", ""))
+        url = agent_api.doc_url(cit.get("url", ""))
         symbol = cit.get("symbol") or ""
         label = f"{cit.get('title', '')}" + (f" · {symbol}" if symbol else "")
         lines.append(f"- [{cit.get('n')}] {label} — {url}")
@@ -135,20 +83,18 @@ def _ask_impl(query: str, k: int = 6, mode: str = "hybrid") -> str:
 
 def _doc_impl(doc_id: str, max_chars: int = 6000) -> str:
     try:
-        doc = _get_rag().get_doc(doc_id)
+        payload = agent_api.get_doc_payload(_get_rag(), doc_id, offset=0, limit=max_chars)
     except Exception as exc:  # noqa: BLE001
         return _error_text(exc)
-    if not doc:
-        return f"未找到文档：{doc_id}（可先用 search_docs 找到正确的 doc_id）"
-    body = _strip_html(doc.get("html_text", ""))
-    if len(body) > max_chars:
-        body = body[:max_chars].rstrip() + "\n\n…（已截断，完整内容见 URL）"
-    crumbs = " / ".join(doc.get("breadcrumbs") or [])
+    crumbs = " / ".join(payload["breadcrumbs"])
+    body = payload["text"]
+    if payload["truncated"]:
+        body += "\n\n…（已截断，完整内容见 URL）"
     return "\n".join(
         [
-            f"# {doc.get('title', doc_id)}",
-            f"doc_id: {doc.get('doc_id', doc_id)}",
-            f"URL: {_doc_url(doc.get('url', ''))}",
+            f"# {payload['title']}",
+            f"doc_id: {payload['doc_id']}",
+            f"URL: {payload['url']}",
             f"面包屑: {crumbs}",
             "",
             body,
@@ -158,10 +104,12 @@ def _doc_impl(doc_id: str, max_chars: int = 6000) -> str:
 
 def _stats_impl() -> str:
     try:
-        stats = _get_rag().stats()
+        payload = agent_api.stats_payload(
+            _get_rag(), Path(_INDEX_DIR) if _INDEX_DIR else None
+        )
     except Exception as exc:  # noqa: BLE001
         return _error_text(exc)
-    return json.dumps(stats, ensure_ascii=False, indent=2)
+    return json.dumps(payload, ensure_ascii=False, indent=2)
 
 
 def build_server():
