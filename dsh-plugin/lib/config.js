@@ -12,6 +12,20 @@ export function deriveProjectDir() {
   return path.resolve(HERE, '..', '..'); // 仓库根（目录安装时）
 }
 
+// 发布版从 node_modules 安装时，上面的推导会指向错误目录；
+// 只有推导结果确实像 GodotRag 仓库时才采用，否则要求显式配置。
+export function looksLikeProject(dir) {
+  if (!dir) return false;
+  try {
+    return (
+      existsSync(path.join(dir, 'src', 'godot_rag'))
+      || existsSync(path.join(dir, 'data', 'index', 'meta.json'))
+    );
+  } catch {
+    return false;
+  }
+}
+
 function defaultPythonExe(platform = process.platform) {
   return platform === 'win32'
     ? path.join(homedir(), '.conda', 'envs', 'godotrag', 'python.exe')
@@ -48,11 +62,29 @@ function pick(rawValue, env, envKey, fallbackFn, diagnostics, key) {
 
 export function resolveConfig(raw = {}, env = process.env, options = {}) {
   const useDefaults = options.defaults !== false;
+  const derive = options.deriveProjectDir || deriveProjectDir;
   const diagnostics = [];
   const python = pick(raw.pythonExe, env, 'GODOT_RAG_PYTHON',
     useDefaults ? () => defaultPythonExe() : null, diagnostics, 'pythonExe');
-  const project = pick(raw.projectDir, env, 'GODOT_RAG_PROJECT',
-    useDefaults ? () => deriveProjectDir() : null, diagnostics, 'projectDir');
+
+  const explicitProject = typeof raw.projectDir === 'string' && raw.projectDir.trim() !== ''
+    || typeof env.GODOT_RAG_PROJECT === 'string' && env.GODOT_RAG_PROJECT.trim() !== '';
+  let project;
+  if (!explicitProject && useDefaults) {
+    const derived = derive();
+    if (looksLikeProject(derived)) {
+      project = { value: derived, source: 'default' };
+    } else {
+      project = { value: '', source: 'missing' };
+      diagnostics.push({
+        key: 'projectDir',
+        message: `无法自动推导 GodotRag 项目目录（${derived} 不像本项目）`,
+        hint: '发布版请显式配置 projectDir，或设置环境变量 GODOT_RAG_PROJECT 指向仓库根目录',
+      });
+    }
+  } else {
+    project = pick(raw.projectDir, env, 'GODOT_RAG_PROJECT', null, diagnostics, 'projectDir');
+  }
 
   let index = pick(raw.indexDir, env, 'GODOT_RAG_INDEX_DIR', null, diagnostics, 'indexDir');
   // indexDir 可选：没有时用 <projectDir>/data/index，不应报缺失
@@ -97,15 +129,23 @@ export function resolveConfig(raw = {}, env = process.env, options = {}) {
 
 export function resolveLogConfig(raw = {}, env = process.env) {
   const diagnostics = [];
-  const project = raw.projectDir || env.GODOT_RAG_PROJECT || deriveProjectDir();
-  const projectDir = project ? path.resolve(project) : '';
+  const explicit = raw.projectDir || env.GODOT_RAG_PROJECT;
+  let projectDir = explicit ? path.resolve(explicit) : '';
+  if (!projectDir && !raw.logPath) {
+    const derived = deriveProjectDir();
+    if (looksLikeProject(derived)) projectDir = derived;
+  }
   const logPath = raw.logPath
     ? path.resolve(String(raw.logPath))
     : projectDir
       ? path.join(projectDir, 'logs', 'rag_usage.jsonl')
       : '';
   if (!logPath) {
-    diagnostics.push({ key: 'logPath', message: '无法确定日志路径', hint: '配置 projectDir 或 logPath' });
+    diagnostics.push({
+      key: 'logPath',
+      message: '无法确定日志路径（未配置 projectDir，且无法自动推导项目目录）',
+      hint: '配置 projectDir、环境变量 GODOT_RAG_PROJECT，或直接配置 logPath',
+    });
   }
   const config = {
     projectDir,
@@ -126,7 +166,7 @@ export function diagnosticMessage(diagnostics, entryId = 'godot-docs-rag') {
     '',
     '修复方式：在 profile 的 cordis.patch.yml 覆盖该行：',
     `- id: ${entryId}`,
-    "  name: '@local/godot-docs-rag'",
+    "  name: '@xixizi-kiara/dsh-godot-docs-rag'",
     '  config:',
     "    pythonExe: '<PYTHON_EXE>'",
     "    projectDir: '<PROJECT_DIR>'",

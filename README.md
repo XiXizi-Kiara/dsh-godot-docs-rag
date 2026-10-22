@@ -59,11 +59,17 @@ cd <PROJECT_DIR>
 
 ## 用法 A：在 DSH 里直接问（推荐）
 
-安装一次插件（在 DSH 中执行，或在插件管理里安装 `<PROJECT_DIR>/dsh-plugin`）：
+安装一次插件（npm 包发布后可用；本地开发见下）：
 
+```powershell
+dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
+# 或在 DSH 内：
+#   plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
 ```
-plugin_manager install_bundle(target: "<PROJECT_DIR>/dsh-plugin")
-```
+
+> 桌面版 DSH 的 profile 由应用自身管理：请在 **Settings → Plugins** 里按包名安装，或在会话里调用 `plugin_manager`。
+> 未发布 / 本地开发时，安装本目录：`plugin_manager install_bundle(target: "<PROJECT_DIR>/dsh-plugin")`。
+> **从 npm 安装后需要配置 `projectDir`**（或设置 `GODOT_RAG_PROJECT`），因为插件位于 `node_modules` 中，无法自动找到你的 GodotRag 仓库。
 
 之后正常对话即可，AI 会在需要时自动调用 4 个工具：
 

@@ -3,7 +3,9 @@ import assert from 'node:assert/strict';
 import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
-import { resolveConfig, resolveLogConfig, diagnosticMessage } from '../lib/config.js';
+import {
+  deriveProjectDir, looksLikeProject, resolveConfig, resolveLogConfig, diagnosticMessage,
+} from '../lib/config.js';
 
 function envDir() {
   return mkdtempSync(path.join(tmpdir(), 'godot-rag-env-'));
@@ -69,3 +71,26 @@ test('日志行配置默认跟随项目目录', () => {
   assert.equal(result.config.maxFiles, 5);
   assert.equal(result.config.redactQueries, false);
 });
+
+test('looksLikeProject 只认 GodotRag 仓库特征', () => {
+  assert.equal(looksLikeProject(deriveProjectDir()), true);
+  const empty = mkdtempSync(path.join(tmpdir(), 'godot-rag-not-project-'));
+  assert.equal(looksLikeProject(empty), false);
+  assert.equal(looksLikeProject(''), false);
+});
+
+test('从 node_modules 安装时推导失败，要求显式 projectDir', () => {
+  const notProject = mkdtempSync(path.join(tmpdir(), 'godot-rag-node-modules-'));
+  const result = resolveConfig({}, {}, { deriveProjectDir: () => notProject });
+  assert.equal(result.ok, false);
+  const diagnostic = result.diagnostics.find((d) => d.key === 'projectDir');
+  assert.ok(diagnostic, '应给出 projectDir 诊断');
+  assert.match(diagnostic.hint, /GODOT_RAG_PROJECT|projectDir/);
+});
+
+test('推导命中仓库时使用默认 projectDir', () => {
+  const result = resolveConfig({ pythonExe: process.execPath }, {}, { defaults: true });  assert.equal(result.ok, true);
+  assert.equal(result.config.projectDir, deriveProjectDir());
+  assert.equal(result.config.configSource.projectDir, 'default');
+});
+

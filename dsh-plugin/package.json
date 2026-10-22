@@ -1,9 +1,24 @@
 {
-  "name": "@local/godot-docs-rag",
+  "name": "@xixizi-kiara/dsh-godot-docs-rag",
   "version": "0.1.0",
-  "private": true,
+  "description": "在 DSH 中提供 Godot 官方文档检索、API 符号直达与整页读取（本地 RAG）",
+  "license": "MIT",
   "type": "module",
-  "description": "把 Godot 官方文档 RAG 暴露为 DSH 原生工具",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "deepseek-harness",
+    "cordis",
+    "godot",
+    "rag",
+    "documentation"
+  ],
+  "engines": {
+    "dsh": ">=0.2.1-rc.2 <0.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "exports": {
     ".": "./index.js",
     "./usage-log": "./usage-log/index.js",
@@ -13,8 +28,20 @@
     "./usage-log/icon": "./usage-log/icon.svg"
   },
   "files": [
-    "index.js", "lib/*.js", "usage-log/index.js", "usage-log/locale/*.json",
-    "usage-log/icon.svg", "cordis.patch.yml", "locale/*.json", "icon.svg", "README.md"
+    "index.js",
+    "lib/*.js",
+    "usage-log/index.js",
+    "usage-log/locale/*.json",
+    "usage-log/icon.svg",
+    "cordis.patch.yml",
+    "locale/*.json",
+    "icon.svg",
+    "LICENSE",
+    "README.md"
   ],
-  "dsh": { "bundle": { "patch": "./cordis.patch.yml" } }
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
 }

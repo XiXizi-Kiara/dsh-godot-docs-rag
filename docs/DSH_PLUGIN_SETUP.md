@@ -19,6 +19,18 @@
 
 ## 2. 安装
 
+**从 npm（发布后，推荐）**：
+
+```powershell
+dsh plugin --profile <profile> add @xixizi-kiara/dsh-godot-docs-rag
+# 或在 DSH 内：
+#   plugin_manager install_bundle(target: "@xixizi-kiara/dsh-godot-docs-rag@0.1.0")
+```
+
+> 桌面版 DSH 的 profile 由应用自身管理，请用 **Settings → Plugins** 按包名安装，或在会话里调用 `plugin_manager`；应用运行期间 `dsh plugin` CLI 不会修改该 profile。
+
+**本地开发（未发布 / 改代码时）**：
+
 ```
 plugin_manager install_bundle(target: <PROJECT_DIR>/dsh-plugin)
 ```
@@ -36,14 +48,16 @@ plugin_manager install_bundle(target: <PROJECT_DIR>/dsh-plugin)
 
 1. 插件行的 `config`（profile 覆盖）；
 2. 环境变量 `GODOT_RAG_PYTHON` / `GODOT_RAG_PROJECT` / `GODOT_RAG_INDEX_DIR`；
-3. 可移植默认值：`~/.conda/envs/godotrag/...`（python）与仓库根目录（projectDir，由插件安装位置推导）；
+3. 可移植默认值：`~/.conda/envs/godotrag/...`（python）；`projectDir` 仅在插件位于 GodotRag 仓库内时可自动推导；
 4. 都失败 → 工具返回 `CONFIG_INVALID` 错误，消息内附可粘贴的配置片段。
+
+> **从 npm 安装时必须显式配置 `projectDir`**（或设置 `GODOT_RAG_PROJECT`）：插件位于 profile 的 `node_modules` 下，无法推导你的仓库位置。
 
 需要显式覆盖时，编辑 `$HOME/.dsh/profiles/<profile>/cordis.patch.yml`：
 
 ```yaml
 - id: godot-docs-rag
-  name: '@local/godot-docs-rag'
+  name: '@xixizi-kiara/dsh-godot-docs-rag'
   config:
     pythonExe: '<PYTHON_EXE>'
     projectDir: '<PROJECT_DIR>'
@@ -71,8 +85,10 @@ plugin_manager install_bundle(target: <PROJECT_DIR>/dsh-plugin)
 ## 6. 卸载
 
 ```
-plugin_manager remove_bundle(target: '@local/godot-docs-rag')
+plugin_manager remove_bundle(target: '@xixizi-kiara/dsh-godot-docs-rag')
 ```
+
+本地开发安装同理（同一包名）；卸载只移除依赖与插件行，不会删除仓库里的代码。
 
 （具体标识以 `plugin_manager list_bundles` 返回为准。）
 

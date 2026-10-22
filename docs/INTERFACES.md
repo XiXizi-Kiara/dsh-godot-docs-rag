@@ -226,7 +226,7 @@ python -m godot_rag.dsh_bridge [--index-dir DIR] [--device auto|cpu|cuda] [--doc
 
 **`dsh-plugin/`（bundle）**
 
-- 两个插件行：`@local/godot-docs-rag`（工具，默认启用）与 `@local/godot-docs-rag/usage-log`
+- 两个插件行：`@xixizi-kiara/dsh-godot-docs-rag`（工具，默认启用）与 `@xixizi-kiara/dsh-godot-docs-rag/usage-log`
   （使用日志，默认 `disabled: true`）；
 - bundle 的 `cordis.patch.yml` **不含任何机器路径**；配置优先级：行 config → 环境变量
   （`GODOT_RAG_PYTHON` / `GODOT_RAG_PROJECT` / `GODOT_RAG_INDEX_DIR`）→ 可移植默认值 → `CONFIG_INVALID`；
